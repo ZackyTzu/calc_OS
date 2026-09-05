@@ -189,7 +189,7 @@ export const precalc: Subject = {
         cmp('vcomp', 'Vector comps', 'x = mag cos, y = mag sin', [v('M', 'magnitude'), v('Q', 'angle (deg)')],
           [{ sym: 'X', name: 'x component', expr: 'M*cos(Q)' }, { sym: 'Y', name: 'y component', expr: 'M*sin(Q)' }],
           ['Components from magnitude and direction.'], { mode: 'deg' }),
-        cmp('dot', 'Dot & angle', 'u.v = mag u mag v cos theta', [v('A', 'u x'), v('B', 'u y'), v('C', 'v x'), v('D', 'v y')],
+        cmp('dot', 'Dot & angle', 'u.v=(mag u)(mag v)cos', [v('A', 'u x'), v('B', 'u y'), v('C', 'v x'), v('D', 'v y')],
           [{ sym: 'P', name: 'u dot v', expr: 'A*C+B*D' }, { sym: 'Q', name: 'angle (deg)', expr: 'cos^-1((A*C+B*D)/(sqrt(A^^2+B^^2)*sqrt(C^^2+D^^2)))' }],
           ['Dot product and the angle between two vectors.'], { mode: 'deg' }),
         cmp('det2', '2x2 det & inv', 'det = ad - bc', [v('A', 'a'), v('B', 'b'), v('C', 'c'), v('D', 'd')],
