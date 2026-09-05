@@ -51,9 +51,9 @@ export function Library() {
         {items.map((e) => {
           const compat = compatibility(e, info, variables);
           return (
-            <Link key={e.id} to={`/library/${e.id}`} className="rounded-xl border border-slate-800 bg-slate-900/60 p-5 hover:border-emerald-700 transition flex flex-col gap-2">
+            <Link key={e.id} to={`/library/${e.id}`} className={`accent-${e.category} card-accent rounded-xl border border-slate-800 bg-slate-900/60 p-5 hover:border-slate-600 transition flex flex-col gap-2`}>
               <div className="flex items-start justify-between gap-2">
-                <h2 className="font-semibold text-lg leading-tight">{e.name}</h2>
+                <h2 className="font-semibold text-lg leading-tight"><span className="mr-2">{{ academic: '📚', games: '🎮', tools: '🧰', assistant: '🤖' }[e.category]}</span>{e.name}</h2>
                 <Badge>{e.calculator === 'ce' ? 'TI-84 CE' : 'Nspire'}</Badge>
               </div>
               <p className="text-sm text-slate-300 flex-1">{e.tagline}</p>

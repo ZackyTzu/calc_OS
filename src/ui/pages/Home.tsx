@@ -2,15 +2,19 @@ import { Link } from 'react-router-dom';
 import { useCalculator } from '../../state/calculator';
 import { Button, Card } from '../components/ui';
 import { catalog, CATEGORY_LABELS, type Category } from '../../lib/library/catalog';
+import { subjects } from '../../lib/programs';
+
+const ICONS: Record<Category, string> = { academic: '📚', games: '🎮', tools: '🧰', assistant: '🤖' };
 
 export function Home() {
   const { status, connect, info } = useCalculator();
   const counts = catalog.reduce<Record<string, number>>((m, e) => ((m[e.category] = (m[e.category] ?? 0) + 1), m), {});
   return (
     <div className="space-y-10">
-      <section className="grid md:grid-cols-2 gap-8 items-center">
-        <div className="space-y-4">
-          <h1 className="text-4xl font-bold tracking-tight">Programs for your TI calculator, installed from the browser.</h1>
+      <section className="grid md:grid-cols-2 gap-8 items-center pt-4">
+        <div className="space-y-5">
+          <p className="text-xs uppercase tracking-[0.2em] text-emerald-400 font-semibold">TI-84 Plus CE · TI-Nspire CX II</p>
+          <h1 className="text-4xl sm:text-5xl font-bold tracking-tight leading-[1.05]">Programs for your TI calculator, installed from the browser.</h1>
           <p className="text-slate-300 text-lg">
             Plug in a TI-84 Plus CE, click connect, and install AP Physics 1, Precalculus and Statistics solvers, games, tools and an offline math assistant. See what is on the calculator and delete what you no longer need. TI-Nspire CX II owners get Python versions of the solvers. No software to install.
           </p>
@@ -23,6 +27,11 @@ export function Home() {
             <p className="text-sm text-amber-200">Your browser cannot talk to USB devices. Use Chrome, Edge or Brave on a computer (WebUSB is not available in Safari or Firefox).</p>
           )}
           {info && <p className="text-sm text-emerald-300">Connected: {info.model}, OS {info.osVersion}.</p>}
+          <dl className="grid grid-cols-3 gap-4 pt-2 text-sm">
+            <div><dt className="text-slate-400">Formulas</dt><dd className="text-2xl font-semibold">{subjects.reduce((n, s) => n + s.topics.reduce((m, t) => m + t.equations.length, 0), 0)}</dd></div>
+            <div><dt className="text-slate-400">Programs</dt><dd className="text-2xl font-semibold">{catalog.length}</dd></div>
+            <div><dt className="text-slate-400">Installs needed</dt><dd className="text-2xl font-semibold">0</dd></div>
+          </dl>
         </div>
         <Card className="space-y-3">
           <h2 className="font-semibold">How it works</h2>
@@ -37,8 +46,8 @@ export function Home() {
 
       <section className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {(Object.keys(CATEGORY_LABELS) as Category[]).map((c) => (
-          <Link key={c} to={`/library?category=${c}`} className="rounded-xl border border-slate-800 bg-slate-900/60 p-5 hover:border-emerald-700 transition">
-            <div className="text-2xl mb-2">{{ academic: '📚', games: '🎮', tools: '🧰', assistant: '🤖' }[c]}</div>
+          <Link key={c} to={`/library?category=${c}`} className={`accent-${c} card-accent rounded-xl border border-slate-800 bg-slate-900/60 p-5 hover:border-slate-600 transition`}>
+            <div className="text-2xl mb-2">{ICONS[c]}</div>
             <div className="font-semibold">{CATEGORY_LABELS[c]}</div>
             <div className="text-sm text-slate-400">{counts[c] ?? 0} program{counts[c] === 1 ? '' : 's'}</div>
           </Link>

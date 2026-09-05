@@ -50,7 +50,7 @@ const g2048 = `ClrHome
 {4,4}->dim([A])
 Fill(0,[A])
 0->S
-0->N
+2->N
 Disp "2048","","SLIDE TILES WITH ARROWS.","EQUAL TILES MERGE.","REACH 2048!","","CLEAR QUITS.","","PRESS ENTER"
 Repeat getKey=105
 End
@@ -74,7 +74,8 @@ If E=P:2+2*(rand<.1)->[A](I,J)
 End
 End
 End
-If N=0:Goto 0
+N-1->N
+If N>0:Goto 0
 Lbl 1
 For(I,1,4)
 For(J,1,4)
@@ -147,6 +148,7 @@ randInt(1,8)->G
 If sum((L1=F) and (L2=G))>0:Goto 5
 Output(G,F,"*")
 Lbl 1
+Wait .08
 getKey->K
 If K=45:Goto 9
 If K=24 and U!=1

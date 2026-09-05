@@ -15,8 +15,9 @@ export function Layout({ children }: { children: ReactNode }) {
     <div className="min-h-screen flex flex-col">
       <header className="border-b border-slate-800 bg-slate-950/80 backdrop-blur sticky top-0 z-10">
         <div className="mx-auto max-w-6xl px-4 h-14 flex items-center gap-6">
-          <Link to="/" className="font-semibold tracking-tight text-lg">
-            <span className="text-emerald-400">calc</span>_OS
+          <Link to="/" className="flex items-center gap-2 font-semibold tracking-tight text-lg">
+            <img src={`${import.meta.env.BASE_URL}favicon.svg`} alt="" className="w-6 h-6" />
+            <span><span className="text-emerald-400">calc</span>_OS</span>
           </Link>
           <nav className="hidden md:flex gap-1 text-sm">
             {links.map(([to, label]) => (
@@ -46,8 +47,12 @@ export function Layout({ children }: { children: ReactNode }) {
       <main className="mx-auto max-w-6xl w-full px-4 py-8 flex-1">{children}</main>
       <footer className="border-t border-slate-800 text-xs text-slate-500 py-6">
         <div className="mx-auto max-w-6xl px-4 flex flex-wrap gap-4 justify-between">
-          <span>calc_OS is free software (GPL-3.0). Not affiliated with Texas Instruments.</span>
-          <a className="hover:text-slate-300" href="https://github.com/ZackyTzu/calc_OS" target="_blank" rel="noreferrer">Source on GitHub</a>
+          <span>calc_OS is free software (GPL-3.0). Not affiliated with Texas Instruments. TI-84 Plus CE and TI-Nspire are trademarks of Texas Instruments.</span>
+          <span className="flex gap-4">
+            <Link className="hover:text-slate-300" to="/about">About</Link>
+            <a className="hover:text-slate-300" href="https://github.com/ZackyTzu/calc_OS" target="_blank" rel="noreferrer">Source on GitHub</a>
+            <a className="hover:text-slate-300" href="https://github.com/ZackyTzu/calc_OS/issues" target="_blank" rel="noreferrer">Report a problem</a>
+          </span>
         </div>
       </footer>
     </div>
