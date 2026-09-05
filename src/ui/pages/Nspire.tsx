@@ -45,7 +45,11 @@ export function Nspire() {
       {n.status === 'disconnected' && (
         <Card className="space-y-3">
           <p className="text-slate-300">Plug in the TI-Nspire CX II with its USB cable and turn it on, then connect. On Windows the CX II needs no extra driver; the older CX needs WinUSB (Zadig).</p>
-          <Button onClick={n.connect}>Connect Nspire</Button>
+          <div className="flex gap-2 flex-wrap">
+            <Button onClick={n.connect}>Connect Nspire</Button>
+            <Button variant="secondary" onClick={n.selfTest}>Test the transfer engine</Button>
+          </div>
+          {n.log.some((l) => l.startsWith('transfer engine loaded')) && <p className="text-sm text-emerald-300">{n.log.filter((l) => l.startsWith('transfer engine loaded')).slice(-1)[0]}.</p>}
         </Card>
       )}
       {n.status === 'connecting' && <Card><span className="animate-pulse">Connecting…</span></Card>}

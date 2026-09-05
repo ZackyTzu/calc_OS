@@ -25,3 +25,6 @@ dist-ssr
 
 # generated at build/test time
 build/
+
+# local editor/agent config
+.claude/

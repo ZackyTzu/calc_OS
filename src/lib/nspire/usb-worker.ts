@@ -31,6 +31,7 @@ ctx.onmessage = async (ev: MessageEvent<Req>) => {
       case 'move': calc!.move_file(args[0] as string, args[1] as string); break;
       case 'copy': calc!.copy_file(args[0] as string, args[1] as string); break;
       case 'free': calc?.free(); calc = null; break;
+      case 'ping': result = typeof mod.Calculator === 'function'; break;
       default: throw new Error(`unknown method ${method}`);
     }
     ctx.postMessage({ id, ok: true, result });

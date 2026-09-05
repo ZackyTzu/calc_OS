@@ -1,5 +1,5 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
-import { NspireCalculator, enableCrossOriginIsolation, nspireSupported, type NspireFile, type NspireInfo, type NspireProgress } from '../lib/nspire/calculator';
+import { NspireCalculator, enableCrossOriginIsolation, nspireSupported, selfTestEngine, type NspireFile, type NspireInfo, type NspireProgress } from '../lib/nspire/calculator';
 
 export type NspireStatus = 'unsupported' | 'needs-isolation' | 'disconnected' | 'connecting' | 'connected' | 'busy';
 
@@ -13,6 +13,7 @@ interface Ctx {
   progress: NspireProgress | null;
   log: string[];
   enableIsolation(): Promise<void>;
+  selfTest(): Promise<void>;
   connect(): Promise<void>;
   disconnect(): Promise<void>;
   open(path: string): Promise<void>;
@@ -145,10 +146,22 @@ export function NspireProvider({ children }: { children: ReactNode }) {
     else if (r === 'unsupported') setError('This browser does not support service workers, which the Nspire engine needs here.');
   }, []);
 
+  const selfTest = useCallback(async () => {
+    setError(null);
+    try {
+      const ms = await selfTestEngine();
+      pushLog(`transfer engine loaded in ${Math.round(ms)} ms`);
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : String(e);
+      setError(`Transfer engine failed to load: ${msg}`);
+      pushLog(`engine self-test failed: ${msg}`);
+    }
+  }, [pushLog]);
+
   const value = useMemo<Ctx>(() => ({
     status, reason: sup.ok ? null : sup.reason ?? null, error, info, path, files, progress, log,
-    enableIsolation, connect, disconnect, open, upload, remove, mkdir, clearError: () => setError(null),
-  }), [status, sup.ok, sup.reason, error, info, path, files, progress, log, enableIsolation, connect, disconnect, open, upload, remove, mkdir]);
+    enableIsolation, selfTest, connect, disconnect, open, upload, remove, mkdir, clearError: () => setError(null),
+  }), [status, sup.ok, sup.reason, error, info, path, files, progress, log, enableIsolation, selfTest, connect, disconnect, open, upload, remove, mkdir]);
 
   return <NspireContext.Provider value={value}>{children}</NspireContext.Provider>;
 }

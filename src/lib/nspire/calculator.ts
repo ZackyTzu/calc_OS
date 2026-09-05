@@ -119,6 +119,28 @@ export class NspireCalculator {
 }
 
 /**
+ * Load the transfer engine in a worker without touching USB, to prove the WebAssembly bundle works
+ * in this browser. Resolves with the time it took.
+ */
+export function selfTestEngine(timeoutMs = 15000): Promise<number> {
+  return new Promise((resolve, reject) => {
+    const t0 = performance.now();
+    const w = new Worker(new URL('./usb-worker.ts', import.meta.url), { type: 'module' });
+    const timer = setTimeout(() => { w.terminate(); reject(new Error('Engine did not load within 15 s')); }, timeoutMs);
+    w.onmessage = (ev: MessageEvent) => {
+      if (ev.data?.id === 0) {
+        clearTimeout(timer);
+        w.terminate();
+        if (ev.data.ok) resolve(performance.now() - t0);
+        else reject(new Error(ev.data.error));
+      }
+    };
+    w.onerror = (e) => { clearTimeout(timer); w.terminate(); reject(new Error(e.message || 'worker failed to start')); };
+    w.postMessage({ id: 0, method: 'ping', args: [] });
+  });
+}
+
+/**
  * GitHub Pages cannot send the COOP/COEP headers that SharedArrayBuffer needs, so a service worker
  * adds them. Returns true when the page must reload to pick the headers up.
  */
