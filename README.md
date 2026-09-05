@@ -10,7 +10,7 @@ Plug in a TI-84 Plus CE, click *Connect*, and:
 - install TI-BASIC games (2048, Snake, Tic-Tac-Toe, Blackjack, Video Poker) and open-licensed community tools, or drop any `.8xp` / `.8xv` / `.8xg` / `.zip` you downloaded elsewhere,
 - see every program and variable on the calculator, save copies, and delete what you no longer need.
 
-For the **TI-Nspire CX II** the same three study programs are generated as Python `.tns` documents, with an experimental in-browser transfer (see below).
+For the **TI-Nspire CX II** the same three study programs and a Python MathBot (answers questions typed in plain words) are generated as `.tns` documents, with an experimental in-browser transfer (see below).
 
 Everything runs in the browser over WebUSB (Chrome, Edge, Brave). No software to install, nothing uploaded anywhere.
 

@@ -7,6 +7,7 @@ import { IMPORTABLE_EXTENSIONS } from '../tifiles/types';
 import type { LibraryEntry } from './catalog';
 import { subjects } from '../programs';
 import { generatePython } from '../nspire/python-gen';
+import { mathbotPython } from '../nspire/mathbot-py';
 import { buildPythonTns } from '../nspire/tns';
 
 export function generatedSource(entry: LibraryEntry): string | null {
@@ -18,7 +19,11 @@ export function generatedSource(entry: LibraryEntry): string | null {
 /** The .tns document for a generated Nspire program. */
 export function tnsFor(entry: LibraryEntry): { filename: string; bytes: Uint8Array; pythonSource: string } {
   if (entry.calculator !== 'nspire' || entry.source.type !== 'generated') throw new Error('Not a generated Nspire program');
-  const subject = subjects.find((s) => s.program === (entry.source as { subject: string }).subject);
+  const name = (entry.source as { subject: string }).subject;
+  if (name === 'MATHBOT') {
+    return { filename: 'MATHBOT.tns', bytes: buildPythonTns([{ name: mathbotPython.filename, source: mathbotPython.source }]), pythonSource: mathbotPython.source };
+  }
+  const subject = subjects.find((s) => s.program === name);
   if (!subject) throw new Error(`Unknown subject ${JSON.stringify(entry.source)}`);
   const py = generatePython(subject);
   return { filename: `${subject.program}.tns`, bytes: buildPythonTns([{ name: py.filename, source: py.source }]), pythonSource: py.source };

@@ -111,9 +111,34 @@ const nspireGames: LibraryEntry[] = ([
   tags: ['Lua', 'Nspire'],
 }));
 
+const nspireMathbot: LibraryEntry = {
+  id: 'mathbot-nspire',
+  name: 'MathBot (Nspire)',
+  tagline: 'Ask math questions in plain words, get answers with steps. Offline, in Python.',
+  description:
+    'MathBot for the TI-Nspire CX II answers typed questions such as "solve 3x-7=11", "factor 360", "sqrt 72", "mean 4,8,15", "12% of 80", "derivative of x^2 at 3", "integral of x^2 from 0 to 2", "slope (1,2) (4,8)" or plain arithmetic. It shows the steps for linear and quadratic equations, simplifies fractions and radicals, and knows the common geometry formulas. Rule-based, runs entirely on the calculator; needs a CX II with OS 5.2 or newer.',
+  category: 'assistant',
+  calculator: 'nspire',
+  kind: 'python',
+  requires: [],
+  source: { type: 'generated', subject: 'MATHBOT' },
+  author: 'calc_OS',
+  license: 'GPL-3.0-or-later',
+  version: '1.0',
+  tags: ['assistant', 'solver', 'steps', 'Python', 'CX II'],
+  features: [
+    'Natural questions: solve, quadratic, factor, prime, gcd/lcm, sqrt, fractions, percent, mean/median/sd, slope, derivative, integral, geometry',
+    'Step-by-step for linear and quadratic equations, complex roots included',
+    'Numeric root finding for anything else',
+    'Every answer path is exercised by the test suite with CPython',
+  ],
+  installs: ['MATHBOT.tns'],
+};
+
 export const catalog: LibraryEntry[] = [
   ...generated,
   ...nspireGenerated,
+  nspireMathbot,
   ...nspireGames,
   {
     id: 'mathbot',
