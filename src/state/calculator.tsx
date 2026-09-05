@@ -49,6 +49,10 @@ export function CalculatorProvider({ children }: { children: ReactNode }) {
   }, [pushLog]);
 
   const attach = useCallback(async (device: USBDevice) => {
+    if (device.productId === 0xe012 || device.productId === 0xe022) {
+      setError('That is a TI-Nspire. Use the Nspire CX II page to connect it.');
+      return;
+    }
     setStatus('connecting');
     setError(null);
     const calc = CECalculator.fromUSBDevice(device);

@@ -61,8 +61,60 @@ const generated: LibraryEntry[] = subjects.map((s) => ({
   installs: [s.program],
 }));
 
+const nspireGenerated: LibraryEntry[] = subjects.map((s) => ({
+  id: `${s.program.toLowerCase()}-nspire`,
+  name: `${s.title.replace(/^AP /, 'AP ')} (Nspire)`,
+  tagline: s.description.split('.')[0] + '. Python version for the CX II.',
+  description: `${s.description} This is the TI-Nspire CX II version: a Python program with text menus. Open the document, run the script from the Python editor (menu, Run), and type the number of each choice.`,
+  category: 'academic',
+  calculator: 'nspire',
+  kind: 'python',
+  requires: [],
+  source: { type: 'generated', subject: s.program },
+  author: 'calc_OS',
+  license: 'GPL-3.0-or-later',
+  version: '1.0',
+  tags: ['AP', 'solver', 'notes', 'Python', 'CX II'],
+  features: [
+    `${s.topics.filter((t) => t.equations.length).length} units, ${s.topics.reduce((n, t) => n + t.equations.length, 0)} formulas`,
+    'Solve for any variable: type the knowns, get the unknown',
+    'Notes for every formula',
+    'Needs a TI-Nspire CX II with OS 5.2 or newer (Python)',
+  ],
+  installs: [`${s.program}.tns`],
+}));
+
+const TICALC_LUA = 'https://www.ticalc.org/pub/nspire/lua/games/';
+const nspireGames: LibraryEntry[] = ([
+  ['nspire-flappy', 'Flappy Bird (Nspire)', 'flappybird.zip', 'Tap to flap through the pipes.'],
+  ['nspire-pacman', 'Pac-Man (Nspire)', 'pacman.zip', 'The arcade classic in Lua.'],
+  ['nspire-tetris', 'ColorTetris (Nspire)', 'colortetris.zip', 'Tetris with colour blocks.'],
+  ['nspire-2048', '2048 (Nspire)', '2048classic.zip', 'Slide and merge tiles.'],
+  ['nspire-chess', 'Chess (Nspire)', 'chesstinspire.zip', 'Chess against the calculator.'],
+  ['nspire-blackjack', 'Blackjack (Nspire)', 'blackjack.zip', 'Card game with statistics.'],
+  ['nspire-holdem', "Texas Hold'em (Nspire)", 'texasholdempoker.zip', 'Multiplayer poker.'],
+  ['nspire-minesweeper', 'Minesweeper (Nspire)', 'minesweeper.zip', 'Clear the grid without hitting a mine.'],
+  ['nspire-snake', 'Snake (Nspire)', 'nsnake.zip', 'Classic snake.'],
+  ['nspire-minecraft', 'Minecraft 2D (Nspire)', 'minecraft2d.zip', '2D sandbox with crafting.'],
+  ['nspire-bloxorz', 'Bloxorz (Nspire)', 'bloxorz.zip', 'Roll the block into the hole.'],
+] as const).map(([id, name, file, tagline]) => ({
+  id, name, tagline,
+  description: `${tagline} A Lua game for any TI-Nspire CX or CX II (OS 3.0.2 or newer, no Ndless needed), hosted on ticalc.org. Download the zip from ticalc.org, unzip it, then send the .tns file to the calculator from the Nspire page.`,
+  category: 'games' as const,
+  calculator: 'nspire' as const,
+  kind: 'lua' as const,
+  requires: [] as Requirement[],
+  source: { type: 'external' as const, url: TICALC_LUA + file, note: 'Hosted by ticalc.org under each author\'s own terms; see the readme inside the zip.' },
+  author: 'ticalc.org contributors',
+  license: 'See archive readme',
+  homepage: TICALC_LUA,
+  tags: ['Lua', 'Nspire'],
+}));
+
 export const catalog: LibraryEntry[] = [
   ...generated,
+  ...nspireGenerated,
+  ...nspireGames,
   {
     id: 'mathbot',
     name: 'MathBot',

@@ -9,7 +9,8 @@ const CLIB_NAMES = ['LIBLOAD', 'GRAPHX', 'FILEIOC', 'KEYPADC'];
 export function compatibility(entry: LibraryEntry, info: CalcInfo | null, vars: CalcVariable[] | null): Compat {
   const details: string[] = [];
   if (entry.calculator === 'nspire') {
-    return { level: 'unknown', title: 'TI-Nspire CX II program', details: ['Nspire transfers are not supported in the browser yet; download the file and use TI-Nspire CX Student Software or n-link.'] };
+    if (entry.kind === 'python') return { level: 'ok', title: 'TI-Nspire CX II (Python)', details: ['Needs a CX II with OS 5.2 or newer. Install from the Nspire page, or download the .tns and copy it with TI-Nspire software.'] };
+    return { level: 'ok', title: 'TI-Nspire CX / CX II (Lua)', details: ['Runs on any Nspire CX or CX II with OS 3.0.2 or newer, no Ndless needed.'] };
   }
   if (!info) {
     if (entry.requires.includes('asm')) {

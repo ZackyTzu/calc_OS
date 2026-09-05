@@ -25,7 +25,7 @@ export interface Equation {
    * those raw TI-BASIC lines run after the inputs are prompted and must store every output
    * (output `expr` is then documentation only).
    */
-  compute?: { inputs: string[]; outputs: { sym: string; name: string; expr: string }[]; code?: string[] };
+  compute?: { inputs: string[]; outputs: { sym: string; name: string; expr: string }[]; code?: string[]; /** Python lines for the Nspire version when `code` cannot be translated automatically. */ py?: string[] };
   /** Set false to skip the JavaScript consistency check (functions the evaluator lacks, list ops, ...). */
   check?: boolean;
   /** Trig mode required by the formulas. */

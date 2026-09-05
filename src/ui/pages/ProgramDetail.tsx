@@ -4,6 +4,8 @@ import { findEntry, CATEGORY_LABELS } from '../../lib/library/catalog';
 import { compatibility } from '../../lib/library/compat';
 import { downloadable, entriesFor, generatedSource } from '../../lib/library/install';
 import { useCalculator } from '../../state/calculator';
+import { useNspire } from '../../state/nspire';
+import { tnsFor } from '../../lib/library/install';
 import { Badge, Button, Card, CompatBadge, ErrorBox } from '../components/ui';
 import { SourceView } from '../components/SourceView';
 import { subjects } from '../../lib/programs';
@@ -12,6 +14,7 @@ export function ProgramDetail() {
   const { id } = useParams();
   const entry = id ? findEntry(id) : undefined;
   const { status, info, variables, install, progress, error, clearError, connect } = useCalculator();
+  const nspire = useNspire();
   const [localError, setLocalError] = useState<string | null>(null);
   const [done, setDone] = useState(false);
   const [size, setSize] = useState<number | null>(null);
@@ -23,6 +26,7 @@ export function ProgramDetail() {
     setDone(false);
     if (!entry) return;
     if (entry.source.type === 'external') { setSize(null); return; }
+    if (entry.calculator === 'nspire') { try { setSize(tnsFor(entry).bytes.length); } catch { setSize(null); } return; }
     entriesFor(entry).then((es) => setSize(es.reduce((n, e) => n + e.data.length, 0))).catch(() => setSize(null));
   }, [entry]);
 
@@ -40,6 +44,18 @@ export function ProgramDetail() {
       const clash = entries.filter((e) => variables?.some((v) => v.name === e.name && v.type === e.type));
       if (clash.length && !window.confirm(`${clash.map((c) => c.name).join(', ')} already exists on the calculator. Replace it?`)) return;
       await install(entries, { replace: true });
+      setDone(true);
+    } catch (e) {
+      setLocalError((e as Error).message);
+    }
+  }
+
+  async function doInstallNspire() {
+    setLocalError(null);
+    setDone(false);
+    try {
+      const t = tnsFor(entry!);
+      await nspire.upload(t.filename, t.bytes, '/calc_OS');
       setDone(true);
     } catch (e) {
       setLocalError((e as Error).message);
@@ -96,7 +112,7 @@ export function ProgramDetail() {
           )}
           {source && (
             <div>
-              <h2 className="font-semibold mb-2">Program source</h2>
+              <h2 className="font-semibold mb-2">{entry.calculator === 'nspire' ? 'Python source' : 'Program source'}</h2>
               <SourceView source={source} />
             </div>
           )}
@@ -110,7 +126,19 @@ export function ProgramDetail() {
             </ul>
             {size !== null && <p className="text-xs text-slate-400">Size on calculator: {(size / 1024).toFixed(1)} KB</p>}
             {installedAlready && <p className="text-xs text-emerald-300">Already on your calculator.</p>}
-            {entry.source.type !== 'external' ? (
+            {entry.calculator === 'nspire' && entry.source.type !== 'external' ? (
+              <div className="flex flex-col gap-2">
+                {nspire.status === 'connected' || nspire.status === 'busy' ? (
+                  <Button onClick={doInstallNspire} disabled={nspire.status === 'busy'}>
+                    {nspire.status === 'busy' ? 'Sending…' : 'Send to Nspire (folder calc_OS)'}
+                  </Button>
+                ) : (
+                  <Link to="/nspire"><Button className="w-full">Connect an Nspire to install</Button></Link>
+                )}
+                <Button variant="secondary" onClick={doDownload}>Download .tns</Button>
+                {nspire.error && <ErrorBox message={nspire.error} onClose={nspire.clearError} />}
+              </div>
+            ) : entry.source.type !== 'external' ? (
               <div className="flex flex-col gap-2">
                 {connected ? (
                   <Button onClick={doInstall} disabled={status === 'busy' || compat.level === 'blocked'}>
@@ -130,7 +158,8 @@ export function ProgramDetail() {
                 <Link to="/calculator" className="text-emerald-300 underline">Then install it from file →</Link>
               </div>
             )}
-            {done && <p className="text-sm text-emerald-300">Installed. On the calculator press prgm, choose {entry.installs?.[0] ?? entry.name}, then enter.</p>}
+            {done && entry.calculator === 'ce' && <p className="text-sm text-emerald-300">Installed. On the calculator press prgm, choose {entry.installs?.[0] ?? entry.name}, then enter.</p>}
+            {done && entry.calculator === 'nspire' && <p className="text-sm text-emerald-300">Sent. On the Nspire open My Documents, folder calc_OS, then the document; press menu and choose Run.</p>}
             {(localError || error) && <ErrorBox message={localError ?? error!} onClose={() => { setLocalError(null); clearError(); }} />}
           </Card>
           <Card className="text-sm space-y-1">

@@ -5,10 +5,23 @@ import { tokenize } from '../tibasic/tokenizer';
 import { buildFile, parseFile, programEntry, type VarEntry } from '../tifiles/tifile';
 import { IMPORTABLE_EXTENSIONS } from '../tifiles/types';
 import type { LibraryEntry } from './catalog';
+import { subjects } from '../programs';
+import { generatePython } from '../nspire/python-gen';
+import { buildPythonTns } from '../nspire/tns';
 
 export function generatedSource(entry: LibraryEntry): string | null {
   if (entry.source.type !== 'generated') return null;
+  if (entry.calculator === 'nspire') return tnsFor(entry).pythonSource;
   return programByName(entry.source.subject)?.source ?? null;
+}
+
+/** The .tns document for a generated Nspire program. */
+export function tnsFor(entry: LibraryEntry): { filename: string; bytes: Uint8Array; pythonSource: string } {
+  if (entry.calculator !== 'nspire' || entry.source.type !== 'generated') throw new Error('Not a generated Nspire program');
+  const subject = subjects.find((s) => s.program === (entry.source as { subject: string }).subject);
+  if (!subject) throw new Error(`Unknown subject ${JSON.stringify(entry.source)}`);
+  const py = generatePython(subject);
+  return { filename: `${subject.program}.tns`, bytes: buildPythonTns([{ name: py.filename, source: py.source }]), pythonSource: py.source };
 }
 
 export async function entriesFor(entry: LibraryEntry): Promise<VarEntry[]> {
@@ -32,6 +45,10 @@ export async function entriesFor(entry: LibraryEntry): Promise<VarEntry[]> {
 
 /** Bytes of a downloadable file for a library entry (generated programs and hosted single files). */
 export async function downloadable(entry: LibraryEntry): Promise<{ filename: string; bytes: Uint8Array } | null> {
+  if (entry.calculator === 'nspire' && entry.source.type === 'generated') {
+    const t = tnsFor(entry);
+    return { filename: t.filename, bytes: t.bytes };
+  }
   if (entry.source.type === 'generated') {
     const entries = await entriesFor(entry);
     return { filename: `${entries[0].name}.8xp`, bytes: buildFile(entries, `${entry.name} - calc_OS`) };

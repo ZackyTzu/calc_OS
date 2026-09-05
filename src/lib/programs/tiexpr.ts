@@ -6,7 +6,7 @@ export type Vars = Record<string, number>;
 
 type Tok = { t: 'num'; v: number } | { t: 'var'; v: string } | { t: 'op'; v: string } | { t: 'fn'; v: string } | { t: 'lp' } | { t: 'rp' } | { t: 'comma' };
 
-const FUNCTIONS = ['sqrt(', 'sin^-1(', 'cos^-1(', 'tan^-1(', 'sin(', 'cos(', 'tan(', 'ln(', 'log(', 'abs(', 'e^^(', '10^^(', 'int(', 'round(', 'solve(', 'nDeriv(', 'fnInt(', 'max(', 'min(', 'normalcdf(', 'invNorm(', 'binompdf(', 'binomcdf(', 'geometpdf(', 'geometcdf('];
+const FUNCTIONS = ['sqrt(', 'sin^-1(', 'cos^-1(', 'tan^-1(', 'sin(', 'cos(', 'tan(', 'ln(', 'log(', 'abs(', 'e^^(', '10^^(', 'int(', 'round(', 'solve(', 'nDeriv(', 'fnInt(', 'max(', 'min(', 'normalcdf(', 'invNorm(', 'binompdf(', 'binomcdf(', 'geometpdf(', 'geometcdf(', 'chi^2cdf(', 'tcdf(', 'invT('];
 
 export function lex(src: string): Tok[] {
   const out: Tok[] = [];

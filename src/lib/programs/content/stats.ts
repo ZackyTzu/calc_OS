@@ -6,8 +6,8 @@ const v = (sym: string, name: string): Variable => ({ sym, name });
 function eq(id: string, menu: string, display: string, vars: Variable[], solve: Record<string, string>, notes: string[]): Equation {
   return { id, menu, display, vars, solve, notes };
 }
-function cmp(id: string, menu: string, display: string, inputs: Variable[], outputs: { sym: string; name: string; expr: string }[], notes: string[], opts: { code?: string[]; check?: boolean } = {}): Equation {
-  return { id, menu, display, vars: inputs, compute: { inputs: inputs.map((i) => i.sym), outputs, code: opts.code }, notes, check: opts.check };
+function cmp(id: string, menu: string, display: string, inputs: Variable[], outputs: { sym: string; name: string; expr: string }[], notes: string[], opts: { code?: string[]; check?: boolean; py?: string[] } = {}): Equation {
+  return { id, menu, display, vars: inputs, compute: { inputs: inputs.map((i) => i.sym), outputs, code: opts.code, py: opts.py }, notes, check: opts.check };
 }
 
 const INF = '1|E99';
@@ -107,7 +107,12 @@ export const stats: Subject = {
         cmp('ev', 'E(X) via lists', 'E(X) = sum x P(x)', [],
           [{ sym: 'M', name: 'mean E(X)', expr: '' }, { sym: 'S', name: 'sd', expr: '' }],
           ['Put the values in L1 and their probabilities in L2 first (STAT, EDIT).', 'Variance = sum (x - mean)2 P(x).'],
-          { code: ['Disp "Values in L1,"', 'Disp "probabilities in L2."', 'Pause ', 'sum(L1*L2)->M', 'sqrt(sum(L1^^2*L2)-M^^2)->S'], check: false }),
+          { code: ['Disp "Values in L1,"', 'Disp "probabilities in L2."', 'Pause ', 'sum(L1*L2)->M', 'sqrt(sum(L1^^2*L2)-M^^2)->S'], check: false, py: [
+            'xs = [float(t) for t in input("values, comma separated: ").split(",") if t.strip()]',
+            'ps = [float(t) for t in input("probabilities, comma separated: ").split(",") if t.strip()]',
+            "v['M'] = sum([xs[i] * ps[i] for i in range(len(xs))])",
+            "v['S'] = math.sqrt(sum([xs[i] ** 2 * ps[i] for i in range(len(xs))]) - v['M'] ** 2)",
+          ] }),
         cmp('combine', 'X + Y, X - Y', 'independent X and Y', [v('A', 'mean X'), v('B', 'sd X'), v('C', 'mean Y'), v('D', 'sd Y')],
           [{ sym: 'M', name: 'mean X+Y', expr: 'A+C' }, { sym: 'S', name: 'sd X+Y', expr: 'sqrt(B^^2+D^^2)' }, { sym: 'N', name: 'mean X-Y', expr: 'A-C' }, { sym: 'T', name: 'sd X-Y', expr: 'sqrt(B^^2+D^^2)' }],
           ['Means add or subtract. Variances ALWAYS add (for independent variables), even for X - Y.']),

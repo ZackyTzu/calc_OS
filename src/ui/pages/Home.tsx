@@ -12,7 +12,7 @@ export function Home() {
         <div className="space-y-4">
           <h1 className="text-4xl font-bold tracking-tight">Programs for your TI calculator, installed from the browser.</h1>
           <p className="text-slate-300 text-lg">
-            Plug in a TI-84 Plus CE, click connect, and install AP Physics 1, Precalculus and Statistics solvers, games, tools and an offline math assistant. See what is on the calculator and delete what you no longer need. No software to install.
+            Plug in a TI-84 Plus CE, click connect, and install AP Physics 1, Precalculus and Statistics solvers, games, tools and an offline math assistant. See what is on the calculator and delete what you no longer need. TI-Nspire CX II owners get Python versions of the solvers. No software to install.
           </p>
           <div className="flex gap-3 flex-wrap">
             {status === 'disconnected' && <Button onClick={connect}>Connect calculator</Button>}
