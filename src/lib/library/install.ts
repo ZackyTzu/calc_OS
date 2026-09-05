@@ -1,6 +1,6 @@
 // Turn a library entry into the variables that get sent to the calculator.
 import { unzipSync } from 'fflate';
-import { subjects, generateAcademic } from '../programs';
+import { programByName } from '../programs';
 import { tokenize } from '../tibasic/tokenizer';
 import { buildFile, parseFile, programEntry, type VarEntry } from '../tifiles/tifile';
 import { IMPORTABLE_EXTENSIONS } from '../tifiles/types';
@@ -8,16 +8,13 @@ import type { LibraryEntry } from './catalog';
 
 export function generatedSource(entry: LibraryEntry): string | null {
   if (entry.source.type !== 'generated') return null;
-  const subject = subjects.find((s) => s.program === (entry.source as { subject: string }).subject);
-  if (!subject) return null;
-  return generateAcademic(subject).source;
+  return programByName(entry.source.subject)?.source ?? null;
 }
 
 export async function entriesFor(entry: LibraryEntry): Promise<VarEntry[]> {
   if (entry.source.type === 'generated') {
-    const subject = subjects.find((s) => s.program === (entry.source as { subject: string }).subject);
-    if (!subject) throw new Error(`Unknown subject ${JSON.stringify(entry.source)}`);
-    const prog = generateAcademic(subject);
+    const prog = programByName(entry.source.subject);
+    if (!prog) throw new Error(`Unknown program ${entry.source.subject}`);
     return [programEntry(prog.name, tokenize(prog.source), { archived: true })];
   }
   if (entry.source.type === 'hosted') {

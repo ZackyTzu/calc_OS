@@ -64,6 +64,42 @@ const generated: LibraryEntry[] = subjects.map((s) => ({
 export const catalog: LibraryEntry[] = [
   ...generated,
   {
+    id: 'mathbot',
+    name: 'MathBot',
+    tagline: 'Ask a math question on the calculator, get the answer with steps. Works offline.',
+    description:
+      'MathBot is a math assistant that runs entirely on the calculator. Type a question in capitals such as SOLVE 3X-7=11, FACTOR 360, GCD 12,18, SQRT 72, MEAN 4,8,15 or DERIV X^2 AT 3, or use its menus. It recognises linear and quadratic equations and shows the steps (isolate X, discriminant, quadratic formula), factors integers, simplifies radicals and fractions, does percent problems, geometry formulas, list statistics, numeric derivatives and integrals. It is rule-based, not a language model: nothing leaves the calculator and no internet is needed.',
+    category: 'assistant',
+    calculator: 'ce',
+    kind: 'tibasic',
+    requires: [],
+    source: { type: 'generated', subject: 'MATHBOT' },
+    author: 'calc_OS',
+    license: 'GPL-3.0-or-later',
+    version: '1.0',
+    tags: ['assistant', 'solver', 'steps', 'TI-BASIC'],
+    features: [
+      'Type questions: SOLVE, FACTOR, PRIME, GCD, LCM, SQRT, MEAN, SLOPE, DERIV, INTEG, percent, or any arithmetic',
+      'Step-by-step for linear and quadratic equations, including complex roots',
+      'Menus for fractions, percent, geometry, statistics of a list, derivatives and integrals',
+      'Runs on every TI-84 Plus CE OS (5.2 or newer), no jailbreak needed',
+    ],
+    installs: ['MATHBOT'],
+  },
+  ...([
+    ['g2048', 'G2048', '2048', 'Slide and merge tiles to reach 2048.', 'The addictive sliding-tile puzzle on the home screen. Arrow keys slide all tiles; equal tiles merge and add to your score. Two tiles are never the same game twice.', ['Arrow keys to slide, CLEAR to quit', 'Score and game-over detection', 'Text-mode: runs on every OS'], ['puzzle']],
+    ['snake', 'SNAKE', 'Snake', 'Steer the snake, eat, grow, do not hit your tail.', 'Classic snake on the 26 x 8 home-screen grid. Eat the * to grow. Hitting a wall or your own tail ends the game.', ['Arrow keys steer', 'Score and length shown at the end', 'Text-mode: runs on every OS'], ['arcade']],
+    ['tictac', 'TICTAC', 'Tic-Tac-Toe', 'Beat the calculator, if you can.', 'Tic-tac-toe against a computer opponent that takes wins, blocks yours, grabs the centre and corners. Pick cells with the number keys laid out like the keypad.', ['Unbeatable-ish AI', 'Instant replay with ENTER', 'Text-mode: runs on every OS'], ['board']],
+    ['blackjack', 'BLACKJCK', 'Blackjack', 'Hit or stand against a dealer who stands on 17.', 'Casino blackjack with a bankroll. Blackjack pays 3 to 2, aces count as 1 or 11 automatically, dealer stands on 17.', ['Bet from your bankroll', 'Hit / Stand menu', 'Text-mode: runs on every OS'], ['cards', 'casino']],
+    ['poker', 'POKER', 'Video Poker', 'Jacks or Better with the real pay table.', 'Five-card draw video poker from a shuffled 52-card deck. Hold cards with keys 1 to 5, draw with ENTER. Pays from a pair of jacks up to a royal flush at 250 times your bet.', ['Standard Jacks-or-Better pay table', 'Real 52-card deck, no repeats', 'Text-mode: runs on every OS'], ['cards', 'casino']],
+  ] as const).map(([id, prog, name, tagline, description, features, tags]) => ({
+    id, name, tagline, description,
+    category: 'games' as const, calculator: 'ce' as const, kind: 'tibasic' as const, requires: [] as Requirement[],
+    source: { type: 'generated' as const, subject: prog },
+    author: 'calc_OS', license: 'GPL-3.0-or-later', version: '1.0',
+    tags: [...tags, 'TI-BASIC'], features: [...features], installs: [prog],
+  })),
+  {
     id: 'clibs',
     name: 'CE C Libraries',
     tagline: 'Shared libraries most C and assembly games need.',

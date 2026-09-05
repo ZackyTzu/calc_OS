@@ -105,7 +105,8 @@ function emitCompute(b: ProgramBuilder, eq: Equation, solve: Label, back: Label)
     const v = eq.vars.find((x) => x.sym === sym)!;
     b.input(`${v.name}=`, sym);
   }
-  for (const o of c.outputs) b.store(o.expr, o.sym);
+  if (c.code) for (const line of c.code) b.raw(line);
+  else for (const o of c.outputs) b.store(o.expr, o.sym);
   b.clrHome();
   b.disp(eq.display);
   for (const o of c.outputs) b.dispValue(`${o.name}=`, o.sym);
@@ -170,7 +171,7 @@ export function validateSubject(s: Subject): void {
         for (const i of e.compute.inputs) if (!syms.has(i)) throw new Error(`${e.id}: compute input ${i} undeclared`);
         for (const o of e.compute.outputs) {
           if (!/^[A-Z]$/.test(o.sym)) throw new Error(`${e.id}: output symbol ${o.sym}`);
-          if (syms.has(o.sym) && !e.compute.inputs.includes(o.sym)) { /* outputs may reuse declared vars */ }
+          if (e.compute.code) continue; // code blocks are checked by the linter, not the evaluator
           for (const used of variablesIn(o.expr)) {
             if (!e.compute.inputs.includes(used) && !constSyms.has(used) && !e.compute.outputs.some((x) => x.sym === used)) {
               throw new Error(`${e.id}: output ${o.sym} uses ${used} which is not an input`);

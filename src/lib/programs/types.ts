@@ -20,8 +20,14 @@ export interface Equation {
    * Variables absent from this map are input-only.
    */
   solve?: Record<string, string>;
-  /** Alternative to `solve`: fixed inputs, several outputs computed at once. */
-  compute?: { inputs: string[]; outputs: { sym: string; name: string; expr: string }[] };
+  /**
+   * Alternative to `solve`: fixed inputs, several outputs computed at once. When `code` is given,
+   * those raw TI-BASIC lines run after the inputs are prompted and must store every output
+   * (output `expr` is then documentation only).
+   */
+  compute?: { inputs: string[]; outputs: { sym: string; name: string; expr: string }[]; code?: string[] };
+  /** Set false to skip the JavaScript consistency check (functions the evaluator lacks, list ops, ...). */
+  check?: boolean;
   /** Trig mode required by the formulas. */
   mode?: 'deg' | 'rad';
   /** Free text; wrapped to 26 columns and paged automatically. */

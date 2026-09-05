@@ -1,13 +1,12 @@
 // Write every generated program to build/programs as .8xp plus its TI-BASIC source, for inspection
 // and for the Python cross-check (scripts/crosscheck_tivars.py).
 import { writeFileSync, mkdirSync } from 'node:fs';
-import { subjects, generateAcademic, lint } from '../src/lib/programs/index';
+import { allPrograms, lint } from '../src/lib/programs/index';
 import { tokenize } from '../src/lib/tibasic/tokenizer';
 import { buildFile, programEntry } from '../src/lib/tifiles/tifile';
 
 mkdirSync('build/programs', { recursive: true });
-for (const s of subjects) {
-  const p = generateAcademic(s);
+for (const p of allPrograms()) {
   const issues = lint(p.source);
   if (issues.length) {
     console.error(`${p.name}: ${issues.length} lint issue(s)`);

@@ -6,7 +6,7 @@ export type Vars = Record<string, number>;
 
 type Tok = { t: 'num'; v: number } | { t: 'var'; v: string } | { t: 'op'; v: string } | { t: 'fn'; v: string } | { t: 'lp' } | { t: 'rp' } | { t: 'comma' };
 
-const FUNCTIONS = ['sqrt(', 'sin^-1(', 'cos^-1(', 'tan^-1(', 'sin(', 'cos(', 'tan(', 'ln(', 'log(', 'abs(', 'e^^(', '10^^(', 'int(', 'round(', 'solve(', 'nDeriv(', 'fnInt(', 'max(', 'min('];
+const FUNCTIONS = ['sqrt(', 'sin^-1(', 'cos^-1(', 'tan^-1(', 'sin(', 'cos(', 'tan(', 'ln(', 'log(', 'abs(', 'e^^(', '10^^(', 'int(', 'round(', 'solve(', 'nDeriv(', 'fnInt(', 'max(', 'min(', 'normalcdf(', 'invNorm(', 'binompdf(', 'binomcdf(', 'geometpdf(', 'geometcdf('];
 
 export function lex(src: string): Tok[] {
   const out: Tok[] = [];
@@ -32,6 +32,8 @@ export function lex(src: string): Tok[] {
       i = j;
       continue;
     }
+    if (src.startsWith('nCr', i)) { out.push({ t: 'op', v: 'nCr' }); i += 3; continue; }
+    if (src.startsWith('nPr', i)) { out.push({ t: 'op', v: 'nPr' }); i += 3; continue; }
     const fn = FUNCTIONS.find((f) => src.startsWith(f, i));
     if (fn) { out.push({ t: 'fn', v: fn.slice(0, -1) }); i += fn.length; continue; }
     if (src.startsWith('pi', i)) { out.push({ t: 'num', v: Math.PI }); i += 2; continue; }
@@ -39,7 +41,7 @@ export function lex(src: string): Tok[] {
     if (src.startsWith('^^-1', i)) { out.push({ t: 'op', v: '^' }, { t: 'num', v: -1 }); i += 4; continue; }
     if (src.startsWith('^^2', i)) { out.push({ t: 'op', v: '^' }, { t: 'num', v: 2 }); i += 3; continue; }
     if (src.startsWith('^^3', i)) { out.push({ t: 'op', v: '^' }, { t: 'num', v: 3 }); i += 3; continue; }
-    if ('+-*/^~'.includes(c)) { out.push({ t: 'op', v: c }); i++; continue; }
+    if ('+-*/^~!'.includes(c)) { out.push({ t: 'op', v: c }); i++; continue; }
     if (c === '(') { out.push({ t: 'lp' }); i++; continue; }
     if (c === ')') { out.push({ t: 'rp' }); i++; continue; }
     if (c === ',') { out.push({ t: 'comma' }); i++; continue; }
@@ -124,6 +126,12 @@ export function evaluate(src: string, vars: Vars, opts: EvalOptions = {}): numbe
         case 'round': return args.length > 1 ? Number(a.toFixed(args[1])) : Math.round(a);
         case 'max': return Math.max(...args);
         case 'min': return Math.min(...args);
+        case 'normalcdf': return normalcdf(args[0], args[1], args[2] ?? 0, args[3] ?? 1);
+        case 'invNorm': return invNorm(args[0], args[1] ?? 0, args[2] ?? 1);
+        case 'binompdf': return binompdf(args[0], args[1], args[2]);
+        case 'binomcdf': { let acc = 0; for (let k = 0; k <= args[2]; k++) acc += binompdf(args[0], args[1], k); return acc; }
+        case 'geometpdf': return Math.pow(1 - args[0], args[1] - 1) * args[0];
+        case 'geometcdf': return 1 - Math.pow(1 - args[0], args[1]);
         default: throw new Error(`Unsupported function ${t.v}`);
       }
     }
@@ -136,6 +144,7 @@ export function evaluate(src: string, vars: Vars, opts: EvalOptions = {}): numbe
   }
   function power(): number {
     let base = primary();
+    while (peek()?.t === 'op' && (peek() as { v: string }).v === '!') { next(); base = factorial(base); }
     while (peek()?.t === 'op' && (peek() as { v: string }).v === '^') {
       next();
       const e = unary();
@@ -143,13 +152,25 @@ export function evaluate(src: string, vars: Vars, opts: EvalOptions = {}): numbe
     }
     return base;
   }
-  function term(): number {
+  function combin(): number {
     let v = unary();
+    for (;;) {
+      const t = peek();
+      if (t?.t === 'op' && (t.v === 'nCr' || t.v === 'nPr')) {
+        next();
+        const k = unary();
+        v = t.v === 'nCr' ? choose(v, k) : perm(v, k);
+      } else break;
+    }
+    return v;
+  }
+  function term(): number {
+    let v = combin();
     for (;;) {
       const t = peek();
       if (t?.t === 'op' && (t.v === '*' || t.v === '/')) {
         next();
-        const r = unary();
+        const r = combin();
         v = t.v === '*' ? v * r : v / r;
       } else if (t && (t.t === 'var' || t.t === 'lp' || t.t === 'fn' || t.t === 'num')) {
         throw new Error(`Implicit multiplication is not allowed in content expressions: ${src}`);
@@ -211,4 +232,54 @@ export function variablesIn(src: string): string[] {
   const seen = new Set<string>();
   for (const t of lex(src)) if (t.t === 'var') seen.add(t.v);
   return [...seen];
+}
+
+function factorial(n: number): number {
+  if (n < 0 || n !== Math.floor(n)) return NaN;
+  let r = 1;
+  for (let i = 2; i <= n; i++) r *= i;
+  return r;
+}
+function perm(n: number, k: number): number {
+  let r = 1;
+  for (let i = 0; i < k; i++) r *= n - i;
+  return r;
+}
+function choose(n: number, k: number): number {
+  if (k < 0 || k > n) return 0;
+  return perm(n, k) / factorial(k);
+}
+function binompdf(n: number, p: number, k: number): number {
+  return choose(n, k) * Math.pow(p, k) * Math.pow(1 - p, n - k);
+}
+/** Standard normal CDF via erfc (Numerical Recipes approximation, |error| < 1.2e-7). */
+function phi(z: number): number {
+  return 0.5 * (1 + erfRescaled(z));
+}
+function erfRescaled(z: number): number {
+  // erf(z / sqrt 2) computed with the same approximation
+  const x = z / Math.SQRT2;
+  const t = 1 / (1 + 0.5 * Math.abs(x));
+  const y = 1 - t * Math.exp(-x * x - 1.26551223 + t * (1.00002368 + t * (0.37409196 + t * (0.09678418 + t * (-0.18628806 + t * (0.27886807 + t * (-1.13520398 + t * (1.48851587 + t * (-0.82215223 + t * 0.17087277)))))))));
+  return x >= 0 ? y : -y;
+}
+function normalcdf(lo: number, hi: number, mu: number, sigma: number): number {
+  const a = (lo - mu) / sigma, b = (hi - mu) / sigma;
+  return phi(b) - phi(a);
+}
+/** Acklam's inverse normal approximation, refined with one Newton step. */
+function invNorm(p: number, mu: number, sigma: number): number {
+  if (p <= 0 || p >= 1) return NaN;
+  const a = [-3.969683028665376e1, 2.209460984245205e2, -2.759285104469687e2, 1.38357751867269e2, -3.066479806614716e1, 2.506628277459239];
+  const b = [-5.447609879822406e1, 1.615858368580409e2, -1.556989798598866e2, 6.680131188771972e1, -1.328068155288572e1];
+  const c = [-7.784894002430293e-3, -3.223964580411365e-1, -2.400758277161838, -2.549732539343734, 4.374664141464968, 2.938163982698783];
+  const d = [7.784695709041462e-3, 3.224671290700398e-1, 2.445134137142996, 3.754408661907416];
+  const pl = 0.02425, ph = 1 - pl;
+  let x: number;
+  if (p < pl) { const q = Math.sqrt(-2 * Math.log(p)); x = (((((c[0] * q + c[1]) * q + c[2]) * q + c[3]) * q + c[4]) * q + c[5]) / ((((d[0] * q + d[1]) * q + d[2]) * q + d[3]) * q + 1); }
+  else if (p <= ph) { const q = p - 0.5, r = q * q; x = (((((a[0] * r + a[1]) * r + a[2]) * r + a[3]) * r + a[4]) * r + a[5]) * q / (((((b[0] * r + b[1]) * r + b[2]) * r + b[3]) * r + b[4]) * r + 1); }
+  else { const q = Math.sqrt(-2 * Math.log(1 - p)); x = -(((((c[0] * q + c[1]) * q + c[2]) * q + c[3]) * q + c[4]) * q + c[5]) / ((((d[0] * q + d[1]) * q + d[2]) * q + d[3]) * q + 1); }
+  const e = phi(x) - p;
+  x -= e * Math.sqrt(2 * Math.PI) * Math.exp(x * x / 2);
+  return mu + sigma * x;
 }

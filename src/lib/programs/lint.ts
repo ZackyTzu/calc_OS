@@ -1,6 +1,7 @@
 // Structural checks for generated TI-BASIC. These catch the mistakes that would otherwise only
 // show up as ERR:SYNTAX / ERR:LABEL on the calculator.
 import { tokenize, TokenizeError } from '../tibasic/tokenizer';
+import { BY_NAME, MAX_NAME_LENGTH } from '../tibasic/tokens';
 import { INPUT_PROMPT_MAX, MENU_MAX_OPTIONS, MENU_OPTION_MAX, MENU_TITLE_MAX, SCREEN_COLS } from './builder';
 
 export interface LintIssue { line: number; message: string; text: string }
@@ -50,6 +51,17 @@ export function lint(source: string): LintIssue[] {
       if (depth < 0) { push('Unbalanced parentheses'); break; }
     }
     if (depth > 0) push('Unclosed parenthesis');
+
+    // A line starting with a word that is not a command tokenizes into loose letters: almost always a typo
+    // such as "Pause" (the token is "Pause " with a space) or "Goto" without its space.
+    const word = /^[A-Za-z][A-Za-z0-9]*/.exec(text)?.[0];
+    if (word && word.length > 1) {
+      let best = 0;
+      for (let len = Math.min(MAX_NAME_LENGTH, text.length); len >= 1; len--) {
+        if (BY_NAME.has(text.slice(0, len))) { best = len; break; }
+      }
+      if (best < word.length) push(`"${word}" is not a command or function; it would be stored as separate letters`);
+    }
 
     const lbl = /^Lbl ([A-Z0-9theta]{1,5})$/.exec(text);
     if (lbl) {

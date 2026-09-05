@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { subjects, generateAcademic, lint } from './index';
+import { subjects, generateAcademic, lint, extraPrograms } from './index';
 import { evaluate, variablesIn } from './tiexpr';
 import { tokenize } from '../tibasic/tokenizer';
 import { buildFile, programEntry, parseFile } from '../tifiles/tifile';
@@ -8,10 +8,13 @@ import type { Equation } from './types';
 const CONSTS = { G: 9.8 };
 
 function randomValue(name: string, rng: () => number): number {
-  if (/deg/.test(name)) return 10 + rng() * 60;          // angles 10..70 degrees
-  if (/^mu/.test(name)) return 0.05 + rng() * 0.5;       // friction coefficients
-  if (/shape/.test(name)) return 0.2 + rng() * 0.8;      // inertia shape factor
-  return 0.5 + rng() * 4;                                // everything else 0.5..4.5
+  if (/deg/.test(name)) return 10 + rng() * 60;                       // angles 10..70 degrees
+  if (/^mu/.test(name)) return 0.05 + rng() * 0.5;                    // friction coefficients
+  if (/shape/.test(name)) return 0.2 + rng() * 0.8;                   // inertia shape factor
+  if (/^(p|q)( hat)?( ?[0-9])?$|^p0$|p guess|^P\(|probab|area|confidence|^r$|^mu\b/.test(name)) return 0.1 + rng() * 0.8; // probabilities
+  if (/successes/.test(name)) return 1 + Math.floor(rng() * 3);           // successes (<= n)
+  if (/^(n|k|df)\b/.test(name)) return 3 + Math.floor(rng() * 10);       // counts
+  return 0.5 + rng() * 4;                                              // everything else 0.5..4.5
 }
 
 /** Deterministic PRNG so failures are reproducible. */
@@ -26,6 +29,7 @@ function mulberry(seed: number) {
 
 function checkEquation(eq: Equation): string[] {
   const problems: string[] = [];
+  if (eq.check === false || eq.compute?.code) return problems;
   const rng = mulberry(42);
   const names = Object.fromEntries(eq.vars.map((v) => [v.sym, v.name]));
   const opts = { mode: eq.mode };
@@ -109,5 +113,16 @@ describe.each(subjects.map((s) => [s.program, s] as const))('%s content', (_name
     const parsed = parseFile(file);
     expect(parsed.entries[0].name).toBe(subject.program);
     expect(parsed.checksumOk).toBe(true);
+  });
+});
+
+describe.each(extraPrograms.map((p) => [p.name, p] as const))('%s program', (_name, prog) => {
+  it('is lint-clean TI-BASIC that tokenizes and fits in a program file', () => {
+    const issues = lint(prog.source);
+    expect(issues.map((i) => `${i.line}: ${i.message} :: ${i.text}`)).toEqual([]);
+    const tokens = tokenize(prog.source);
+    expect(tokens.length).toBeLessThan(60000);
+    const parsed = parseFile(buildFile([programEntry(prog.name, tokens, { archived: true })]));
+    expect(parsed.entries[0].name).toBe(prog.name);
   });
 });
