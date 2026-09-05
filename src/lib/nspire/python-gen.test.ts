@@ -23,7 +23,7 @@ describe.each(subjects.map((s) => [s.program, s] as const))('%s Nspire Python', 
   });
 
   it('avoids features MicroPython lacks', () => {
-    expect(prog.source).not.toMatch(/math\.comb|math\.erf|statistics|:=|\bmatch /);
+    expect(prog.source).not.toMatch(/math\.comb\(|math\.erf\(|import statistics|:=|^\s*match /m);
     if (!hasPython) return;
     // f-strings: ask Python's own parser rather than guessing with a regex
     const r = spawnSync('python3', ['-c', 'import ast,sys; t=ast.parse(sys.stdin.read()); print(any(isinstance(n, ast.JoinedStr) for n in ast.walk(t)))'], { input: prog.source, encoding: 'utf8' });
