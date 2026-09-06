@@ -25,7 +25,13 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm test
+      # Set the repository variable CUSTOM_DOMAIN (Settings, Secrets and variables, Actions, Variables)
+      # to serve the site from your own domain; see docs/custom-domain.md.
       - run: npm run build
+        env:
+          BASE_PATH: ${{ vars.CUSTOM_DOMAIN != '' && '/' || '/calc_OS/' }}
+      - if: vars.CUSTOM_DOMAIN != ''
+        run: echo "${{ vars.CUSTOM_DOMAIN }}" > dist/CNAME
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist

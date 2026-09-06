@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useCalculator } from '../../state/calculator';
+import { CloseIcon } from './Icon';
 
 export function ConnectButton() {
   const { status, info, connect, disconnect } = useCalculator();
@@ -27,7 +28,7 @@ export function ConnectButton() {
         <span>{info?.model ?? 'Calculator'}</span>
         {info && <span className="text-slate-400 hidden sm:inline">OS {info.osMajorMinor}</span>}
       </Link>
-      <button onClick={disconnect} title="Disconnect" className="px-2 py-1.5 rounded-md text-slate-400 hover:bg-slate-800">✕</button>
+      <button onClick={disconnect} title="Disconnect" aria-label="Disconnect" className="px-2 py-1.5 rounded-md text-slate-400 hover:bg-slate-800"><CloseIcon /></button>
     </div>
   );
 }

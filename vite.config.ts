@@ -6,7 +6,8 @@ import wasmPlugin from 'vite-plugin-wasm';
 // Both plugins ship CommonJS typings; under nodenext TypeScript sees the namespace instead of the default export.
 const wasm = wasmPlugin as unknown as () => PluginOption;
 
-// Served from https://zackytzu.github.io/calc_OS/ (GitHub Pages). Override with BASE_PATH=/ for other hosts.
+// Served from https://zackytzu.github.io/calc_OS/ (GitHub Pages). The deploy workflow sets BASE_PATH=/ when the
+// CUSTOM_DOMAIN repository variable is present (docs/custom-domain.md); set it yourself for other hosts.
 // The COOP/COEP headers give SharedArrayBuffer to the Nspire transfer engine in development;
 // in production public/coi-serviceworker.js adds them.
 const isolation = {

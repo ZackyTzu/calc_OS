@@ -54,7 +54,7 @@ export function Library() {
       </div>
       <div className="flex gap-2 flex-wrap text-sm">
         {(['all', ...Object.keys(CATEGORY_LABELS)] as const).map((c) => (
-          <button key={c} onClick={() => set('category', c)} className={`px-3 py-1 rounded-full border ${category === c ? 'bg-emerald-700 border-emerald-600 text-white' : 'border-slate-700 text-slate-300 hover:bg-slate-800'}`}>
+          <button key={c} onClick={() => set('category', c)} className={`px-3 py-1 rounded-md border ${category === c ? 'bg-emerald-700 border-emerald-600 text-white' : 'border-slate-700 text-slate-300 hover:bg-slate-800'}`}>
             {c === 'all' ? 'Everything' : CATEGORY_LABELS[c as Category]}
           </button>
         ))}
@@ -64,9 +64,9 @@ export function Library() {
         {items.map((e) => {
           const compat = compatibility(e, info, variables);
           return (
-            <Link key={e.id} to={`/library/${e.id}`} className={`accent-${e.category} card-accent rounded-xl border border-slate-800 bg-slate-900/60 p-5 hover:border-slate-600 transition flex flex-col gap-2`}>
+            <Link key={e.id} to={`/library/${e.id}`} className={`accent-${e.category} card-accent rounded-xl border border-slate-800 bg-slate-900/60 p-5 hover:border-slate-600 flex flex-col gap-2`}>
               <div className="flex items-start justify-between gap-2">
-                <h2 className="font-semibold text-lg leading-tight"><span className="mr-2">{{ academic: '📚', games: '🎮', tools: '🧰', assistant: '🤖' }[e.category]}</span>{e.name}</h2>
+                <h2 className="font-semibold text-lg leading-tight">{e.name}</h2>
                 <Badge>{e.calculator === 'ce' ? 'TI-84 CE' : 'Nspire'}</Badge>
               </div>
               <p className="text-sm text-slate-300 flex-1">{e.tagline}</p>
@@ -75,7 +75,7 @@ export function Library() {
                 <Badge tone="slate">{{ tibasic: 'TI-BASIC', asm: 'Assembly / C', python: 'Python', lua: 'Lua', tns: 'Nspire document', appvar: 'AppVar' }[e.kind]}</Badge>
                 <CompatBadge compat={compat} />
               </div>
-              <p className="text-xs text-slate-500">by {e.author} · {e.license}</p>
+              <p className="text-xs text-slate-500">by {e.author}, {e.license}</p>
             </Link>
           );
         })}

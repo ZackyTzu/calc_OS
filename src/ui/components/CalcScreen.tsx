@@ -10,7 +10,7 @@ export function CalcScreen({ preview, calculator, caption }: { preview: ScreenPr
     <figure className="select-none">
       <div className={`rounded-2xl p-3 shadow-inner ${calculator === 'ce' ? 'bg-slate-800' : 'bg-zinc-800'}`}>
         <div className="flex items-center justify-between px-1 pb-2 text-[10px] uppercase tracking-widest text-slate-400">
-          <span>{calculator === 'ce' ? 'TI-84 Plus CE' : 'TI-Nspire CX II · Python shell'}</span>
+          <span>{calculator === 'ce' ? 'TI-84 Plus CE' : 'TI-Nspire CX II Python shell'}</span>
           <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
         </div>
         <pre

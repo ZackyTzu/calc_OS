@@ -7,6 +7,7 @@ import { typeName, isProgram, typeExtension } from '../../lib/tifiles/types';
 import type { CalcVariable } from '../../lib/dusb/calculator';
 import { formatBytes } from '../../lib/library/compat';
 import { buildFile } from '../../lib/tifiles/tifile';
+import { CloseIcon } from '../components/Icon';
 
 export function Calculator() {
   const { status, info, variables, error, clearError, connect, refresh, remove, install, download, progress, log } = useCalculator();
@@ -82,7 +83,7 @@ export function Calculator() {
 
       {connected && info && (
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <Card><div className="text-xs text-slate-400">Model</div><div className="font-semibold">{info.model}</div><div className="text-xs text-slate-500">HW {info.hwVersion}{info.pythonOnBoard ? ' · Python' : ''}</div></Card>
+          <Card><div className="text-xs text-slate-400">Model</div><div className="font-semibold">{info.model}</div><div className="text-xs text-slate-500">HW {info.hwVersion}{info.pythonOnBoard ? ', Python' : ''}</div></Card>
           <Card><div className="text-xs text-slate-400">Operating system</div><div className="font-semibold">{info.osVersion}</div><div className="text-xs text-slate-500">boot {info.bootVersion}</div></Card>
           <Card>
             <div className="text-xs text-slate-400">RAM free</div>
@@ -113,8 +114,8 @@ export function Calculator() {
                 <li key={i} className="flex items-center gap-2">
                   <span className="font-mono">{p.filename}</span>
                   {p.error && <span className="text-rose-300">{p.error}</span>}
-                  {!p.error && <span className="text-slate-400">→ {p.entries.map((e) => `${e.name} (${typeName(e.type)}, ${formatBytes(e.data.length)}${e.archived ? ', archive' : ''})`).join(', ')}</span>}
-                  <button className="ml-auto text-slate-500 hover:text-white" onClick={() => setPending((ps) => ps.filter((_, j) => j !== i))}>✕</button>
+                  {!p.error && <span className="text-slate-400">contains {p.entries.map((e) => `${e.name} (${typeName(e.type)}, ${formatBytes(e.data.length)}${e.archived ? ', archive' : ''})`).join(', ')}</span>}
+                  <button className="ml-auto text-slate-500 hover:text-white" aria-label="Remove" onClick={() => setPending((ps) => ps.filter((_, j) => j !== i))}><CloseIcon /></button>
                 </li>
               ))}
             </ul>
@@ -176,7 +177,7 @@ export function Calculator() {
       <details className="text-xs text-slate-500" open={showLog} onToggle={(e) => setShowLog((e.target as HTMLDetailsElement).open)}>
         <summary className="cursor-pointer">Connection log ({log.length})</summary>
         <pre className="mt-2 max-h-64 overflow-auto bg-slate-950 border border-slate-800 rounded p-2 font-mono">
-          {log.map((l) => `${new Date(l.t).toLocaleTimeString()} ${l.dir === 'tx' ? '→' : l.dir === 'rx' ? '←' : '·'} ${l.text}`).join('\n')}
+          {log.map((l) => `${new Date(l.t).toLocaleTimeString()} ${l.dir === 'tx' ? 'TX' : l.dir === 'rx' ? 'RX' : '--'} ${l.text}`).join('\n')}
         </pre>
       </details>
     </div>

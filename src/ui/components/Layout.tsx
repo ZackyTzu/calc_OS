@@ -48,8 +48,10 @@ export function Layout({ children }: { children: ReactNode }) {
       <footer className="border-t border-slate-800 text-xs text-slate-500 py-6">
         <div className="mx-auto max-w-6xl px-4 flex flex-wrap gap-4 justify-between">
           <span>calc_OS is free software (GPL-3.0). Not affiliated with Texas Instruments. TI-84 Plus CE and TI-Nspire are trademarks of Texas Instruments.</span>
-          <span className="flex gap-4">
+          <span className="flex flex-wrap gap-4">
             <Link className="hover:text-slate-300" to="/about">About</Link>
+            <Link className="hover:text-slate-300" to="/terms">Terms</Link>
+            <Link className="hover:text-slate-300" to="/privacy">Privacy</Link>
             <a className="hover:text-slate-300" href="https://github.com/ZackyTzu/calc_OS" target="_blank" rel="noreferrer">Source on GitHub</a>
             <a className="hover:text-slate-300" href="https://github.com/ZackyTzu/calc_OS/issues" target="_blank" rel="noreferrer">Report a problem</a>
           </span>

@@ -35,7 +35,7 @@ export interface CalcInfo {
   isCE: boolean;
   /** Assembly programs run natively (OS <= 5.4) */
   asmNative: boolean;
-  /** Assembly possible with the arTIfiCE jailbreak (OS 5.3 – 5.8.4) */
+  /** Assembly possible with the arTIfiCE jailbreak (OS 5.3 to 5.8.4) */
   asmWithJailbreak: boolean;
   /** No known way to run assembly (OS >= 5.8.5) */
   asmBlocked: boolean;

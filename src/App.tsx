@@ -7,6 +7,8 @@ import { Calculator } from './ui/pages/Calculator';
 import { Unlock } from './ui/pages/Unlock';
 import { Nspire } from './ui/pages/Nspire';
 import { About } from './ui/pages/About';
+import { Terms } from './ui/pages/Terms';
+import { Privacy } from './ui/pages/Privacy';
 
 export default function App() {
   return (
@@ -19,6 +21,8 @@ export default function App() {
         <Route path="/unlock" element={<Unlock />} />
         <Route path="/nspire" element={<Nspire />} />
         <Route path="/about" element={<About />} />
+        <Route path="/terms" element={<Terms />} />
+        <Route path="/privacy" element={<Privacy />} />
         <Route path="*" element={<Home />} />
       </Routes>
     </Layout>

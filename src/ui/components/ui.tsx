@@ -1,5 +1,6 @@
 import type { ReactNode, ButtonHTMLAttributes } from 'react';
 import type { Compat } from '../../lib/library/compat';
+import { CloseIcon } from './Icon';
 
 export function Card({ children, className = '', id }: { children: ReactNode; className?: string; id?: string }) {
   return <div id={id} className={`rounded-xl border border-slate-800 bg-slate-900/60 p-5 ${className}`}>{children}</div>;
@@ -28,7 +29,7 @@ export function Badge({ children, tone = 'slate' }: { children: ReactNode; tone?
     red: 'bg-rose-900/60 text-rose-200',
     blue: 'bg-sky-900/60 text-sky-200',
   }[tone];
-  return <span className={`inline-block text-xs px-2 py-0.5 rounded-full ${t}`}>{children}</span>;
+  return <span className={`inline-block text-xs px-2 py-0.5 rounded ${t}`}>{children}</span>;
 }
 
 export function CompatBadge({ compat }: { compat: Compat }) {
@@ -40,7 +41,11 @@ export function ErrorBox({ message, onClose }: { message: string; onClose?: () =
   return (
     <div className="rounded-lg border border-rose-800 bg-rose-950/50 text-rose-100 text-sm p-3 flex gap-3">
       <span className="flex-1 break-words">{message}</span>
-      {onClose && <button onClick={onClose} className="text-rose-300 hover:text-white">✕</button>}
+      {onClose && (
+        <button onClick={onClose} aria-label="Dismiss" className="text-rose-300 hover:text-white">
+          <CloseIcon />
+        </button>
+      )}
     </div>
   );
 }

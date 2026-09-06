@@ -10,6 +10,7 @@ import { Badge, Button, Card, CompatBadge, ErrorBox } from '../components/ui';
 import { SourceView } from '../components/SourceView';
 import { subjects } from '../../lib/programs';
 import { CalcScreen } from '../components/CalcScreen';
+import { ExternalIcon } from '../components/Icon';
 import { previewPython, previewTiBasic } from '../../lib/tibasic/preview';
 
 export function ProgramDetail() {
@@ -86,7 +87,7 @@ export function ProgramDetail() {
 
   return (
     <div className="space-y-6">
-      <Link to="/library" className="text-sm text-slate-400 hover:text-white">← Library</Link>
+      <Link to="/library" className="text-sm text-slate-400 hover:text-white">Back to the library</Link>
       <div className="grid lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 space-y-5">
           <div>
@@ -110,7 +111,7 @@ export function ProgramDetail() {
                 {subject.topics.map((t) => (
                   <div key={t.id}>
                     <div className="font-medium text-emerald-300">{t.menu}</div>
-                    <div className="text-slate-400">{t.equations.length ? t.equations.map((e) => e.display).join(' · ') : 'Reference notes'}</div>
+                    <div className="text-slate-400">{t.equations.length ? t.equations.map((e) => e.display).join(', ') : 'Reference notes'}</div>
                   </div>
                 ))}
               </div>
@@ -159,10 +160,10 @@ export function ProgramDetail() {
             ) : (
               <div className="space-y-2 text-sm">
                 <a className="block" href={entry.source.url} target="_blank" rel="noreferrer">
-                  <Button className="w-full">Get it from the author ↗</Button>
+                  <Button className="w-full">Get it from the author <ExternalIcon className="inline ml-1 -mt-0.5" /></Button>
                 </a>
                 <p className="text-slate-400">{entry.source.note}</p>
-                <Link to="/calculator" className="text-emerald-300 underline">Then install it from file →</Link>
+                <Link to="/calculator" className="text-emerald-300 underline">Then install the file from the My calculator page.</Link>
               </div>
             )}
             {done && entry.calculator === 'ce' && <p className="text-sm text-emerald-300">Installed. On the calculator press prgm, choose {entry.installs?.[0] ?? entry.name}, then enter.</p>}
@@ -172,7 +173,7 @@ export function ProgramDetail() {
           <Card className="text-sm space-y-1">
             <div><span className="text-slate-400">Author:</span> {entry.author}</div>
             <div><span className="text-slate-400">License:</span> {entry.license}</div>
-            {entry.homepage && <div><a className="text-emerald-300 underline" href={entry.homepage} target="_blank" rel="noreferrer">Project page ↗</a></div>}
+            {entry.homepage && <div><a className="text-emerald-300 underline" href={entry.homepage} target="_blank" rel="noreferrer">Project page <ExternalIcon className="inline ml-1 -mt-0.5" /></a></div>}
             {entry.requires.length > 0 && <div><span className="text-slate-400">Requires:</span> {entry.requires.map((r) => ({ asm: 'assembly support', clibs: 'CE C libraries' })[r]).join(', ')}</div>}
             <div className="flex flex-wrap gap-1 pt-1">{entry.tags.map((t) => <Badge key={t}>{t}</Badge>)}</div>
           </Card>

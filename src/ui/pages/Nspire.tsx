@@ -4,6 +4,7 @@ import { useNspire } from '../../state/nspire';
 import { Button, Card, ErrorBox, Section, Badge } from '../components/ui';
 import { formatBytes } from '../../lib/library/compat';
 import { catalog } from '../../lib/library/catalog';
+import { FileIcon, FolderIcon } from '../components/Icon';
 
 export function Nspire() {
   const n = useNspire();
@@ -82,9 +83,9 @@ export function Nspire() {
                   <tr key={f.path} className="border-t border-slate-800 hover:bg-slate-900/60">
                     <td className="px-3 py-2 font-mono">
                       {f.isDir ? (
-                        <button className="text-emerald-300 hover:underline" onClick={() => n.open(`${n.path === '/' ? '' : n.path}/${f.path}`)}>📁 {f.path}</button>
+                        <button className="text-emerald-300 hover:underline" onClick={() => n.open(`${n.path === '/' ? '' : n.path}/${f.path}`)}><FolderIcon className="inline mr-1.5 -mt-0.5" />{f.path}</button>
                       ) : (
-                        <span>📄 {f.path}</span>
+                        <span><FileIcon className="inline mr-1.5 -mt-0.5 text-slate-400" />{f.path}</span>
                       )}
                     </td>
                     <td className="px-3 py-2 text-right text-slate-300">{f.isDir ? '' : formatBytes(f.size)}</td>
@@ -116,7 +117,7 @@ export function Nspire() {
       <Section title="Programs for the Nspire">
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {nspireEntries.map((e) => (
-            <Link key={e.id} to={`/library/${e.id}`} className="rounded-xl border border-slate-800 bg-slate-900/60 p-4 hover:border-emerald-700 transition">
+            <Link key={e.id} to={`/library/${e.id}`} className="rounded-xl border border-slate-800 bg-slate-900/60 p-4 hover:border-emerald-700">
               <div className="font-semibold">{e.name}</div>
               <div className="text-sm text-slate-400">{e.tagline}</div>
               <div className="mt-2"><Badge>{e.kind === 'python' ? 'Python' : 'Lua'}</Badge></div>
@@ -127,7 +128,7 @@ export function Nspire() {
 
       <Card className="text-sm text-slate-300 space-y-2">
         <h3 className="font-semibold text-white">How the Nspire support works</h3>
-        <p>The CX II speaks a different USB protocol than the TI-84 family. calc_OS uses <a className="underline" href="https://github.com/lights0123/n-link" target="_blank" rel="noreferrer">n-link's</a> open-source engine (web-libnspire) for the transfer, and writes .tns documents the same way the Luna tool does. calc_OS programs for the Nspire are Python (CX II, OS 5.2 or newer): open the document, then run the script with menu → Run.</p>
+        <p>The CX II speaks a different USB protocol than the TI-84 family. calc_OS uses <a className="underline" href="https://github.com/lights0123/n-link" target="_blank" rel="noreferrer">n-link's</a> open-source engine (web-libnspire) for the transfer, and writes .tns documents the same way the Luna tool does. calc_OS programs for the Nspire are Python (CX II, OS 5.2 or newer): open the document, then run the script with menu, then Run.</p>
         <p>This part has been tested against reference files but not yet on a real calculator. If something fails, please <a className="underline" href="https://github.com/ZackyTzu/calc_OS/issues" target="_blank" rel="noreferrer">report it</a> with the connection log.</p>
       </Card>
 

@@ -16,7 +16,7 @@ export function Dropzone({ onFiles, disabled }: { onFiles: (files: ImportedFile[
       onDragLeave={() => setOver(false)}
       onDrop={(e) => { e.preventDefault(); setOver(false); if (!disabled) handle(e.dataTransfer.files); }}
       onClick={() => !disabled && inputRef.current?.click()}
-      className={`rounded-xl border-2 border-dashed p-6 text-center cursor-pointer transition ${
+      className={`rounded-xl border-2 border-dashed p-6 text-center cursor-pointer ${
         over ? 'border-emerald-400 bg-emerald-950/30' : 'border-slate-700 hover:border-slate-500'
       } ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
     >
