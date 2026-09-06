@@ -44,3 +44,19 @@ export function FileIcon(props: SVGProps<SVGSVGElement>) {
     </svg>
   );
 }
+
+export function ChevronIcon(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg {...base} width={12} height={12} {...props}>
+      <path d="m9 6 6 6-6 6" />
+    </svg>
+  );
+}
+
+export function MenuIcon(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg {...base} width={18} height={18} {...props}>
+      <path d="M4 8h16M4 16h16" />
+    </svg>
+  );
+}

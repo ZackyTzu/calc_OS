@@ -39,13 +39,13 @@ export function Dropzone({ onFiles, onRawFiles, disabled, accept = ACCEPT, multi
       onDrop={(e) => { e.preventDefault(); setOver(false); if (!disabled) handle(e.dataTransfer.files); }}
       onClick={openPicker}
       onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openPicker(); } }}
-      className={`rounded-xl border-2 border-dashed p-6 text-center transition-[border-color,background-color] ${
-        over ? 'border-emerald-400 bg-emerald-950/30' : 'border-slate-700 hover:border-slate-500'
+      className={`rounded-[18px] border-2 border-dashed p-8 text-center transition-[border-color,background-color] ${
+        over ? 'border-blue-button bg-[rgba(0,113,227,0.06)]' : 'border-hairline hover:border-faint'
       } ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
     >
       <input ref={inputRef} type="file" multiple={multiple} accept={accept} className="hidden" tabIndex={-1} onChange={(e) => { handle(e.target.files); e.target.value = ''; }} />
       <p className="font-medium">{label}</p>
-      <p className="text-sm text-slate-400 mt-1">{hint}</p>
+      <p className="text-sm text-muted mt-1">{hint}</p>
     </div>
   );
 }

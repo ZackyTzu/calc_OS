@@ -1,6 +1,62 @@
 @import "tailwindcss";
 
+/* Apple-style tokens: system SF stack, #1d1d1f ink on white, #f5f5f7 secondary surfaces, #0066cc links,
+   #0071e3 buttons, and Apple's size-specific tracking (tight on display sizes, slightly loose on captions). */
 @theme {
+  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  --color-ink: #1d1d1f;
+  --color-muted: #6e6e73;
+  --color-faint: #86868b;
+  --color-hairline: #d2d2d7;
+  --color-alt: #f5f5f7;
+  --color-blue: #0066cc;
+  --color-blue-button: #0071e3;
+  --color-blue-hover: #0077ed;
+  --color-blue-dark: #2997ff;
+  --color-green: #248a3d;
+  --color-orange: #b25000;
+  --color-red: #d70015;
+  --color-red-hover: #ff3b30;
+
+  --text-xs: 12px;
+  --text-xs--line-height: 1.3334;
+  --text-xs--letter-spacing: -0.01em;
+  --text-sm: 14px;
+  --text-sm--line-height: 1.4286;
+  --text-sm--letter-spacing: -0.016em;
+  --text-base: 17px;
+  --text-base--line-height: 1.4706;
+  --text-base--letter-spacing: -0.022em;
+  --text-lg: 21px;
+  --text-lg--line-height: 1.381;
+  --text-lg--letter-spacing: 0.011em;
+  --text-xl: 24px;
+  --text-xl--line-height: 1.1667;
+  --text-xl--letter-spacing: 0.009em;
+  --text-2xl: 28px;
+  --text-2xl--line-height: 1.1429;
+  --text-2xl--letter-spacing: 0.007em;
+  --text-3xl: 32px;
+  --text-3xl--line-height: 1.125;
+  --text-3xl--letter-spacing: 0.004em;
+  --text-4xl: 40px;
+  --text-4xl--line-height: 1.1;
+  --text-4xl--letter-spacing: 0em;
+  --text-5xl: 48px;
+  --text-5xl--line-height: 1.0834;
+  --text-5xl--letter-spacing: -0.003em;
+  --text-6xl: 56px;
+  --text-6xl--line-height: 1.0714;
+  --text-6xl--letter-spacing: -0.005em;
+  --text-7xl: 80px;
+  --text-7xl--line-height: 1.05;
+  --text-7xl--letter-spacing: -0.015em;
+
+  --shadow-card: 2px 4px 12px rgba(0, 0, 0, 0.08);
+  --shadow-card-hover: 2px 4px 16px rgba(0, 0, 0, 0.16);
+
   /* Strong ease-out for entering, exiting and press feedback. */
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
   --default-transition-duration: 150ms;
@@ -8,12 +64,12 @@
 }
 
 :root {
-  color-scheme: dark;
+  color-scheme: light;
 }
 
 @layer base {
   body {
-    @apply bg-slate-950 text-slate-100 antialiased;
+    @apply bg-white text-ink text-base antialiased;
   }
   a {
     color: inherit;
@@ -24,18 +80,29 @@
   p, li {
     text-wrap: pretty;
   }
-  ::selection {
-    background: rgb(52 211 153 / 0.3);
-  }
   :focus-visible {
-    outline: 2px solid rgb(52 211 153);
+    outline: 3px solid rgba(0, 125, 250, 0.6);
     outline-offset: 2px;
   }
 }
 
 @layer components {
+  /* The floating chrome: content scrolls under a translucent layer. */
+  .globalnav {
+    background: rgba(255, 255, 255, 0.8);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    backdrop-filter: saturate(180%) blur(20px);
+  }
+  .nav-link {
+    @apply text-xs text-black/80 hover:text-black;
+    transition: color 150ms ease;
+  }
+  .nav-link[aria-current="page"] {
+    @apply text-black font-semibold;
+  }
+
   .btn {
-    @apply inline-flex items-center justify-center gap-2 h-9 px-3.5 rounded-md text-sm font-medium whitespace-nowrap select-none;
+    @apply inline-flex items-center justify-center gap-2 h-[42px] px-[21px] rounded-xl text-base whitespace-nowrap select-none;
     transition:
       background-color 150ms ease,
       color 150ms ease,
@@ -49,41 +116,68 @@
     transform: scale(0.97);
   }
   .btn-sm {
-    @apply h-8 px-3 text-sm;
+    @apply h-8 px-4 text-sm rounded-lg;
   }
   .btn-primary {
-    @apply bg-emerald-600 text-white hover:bg-emerald-500;
+    @apply bg-blue-button text-white hover:bg-blue-hover;
   }
   .btn-secondary {
-    @apply bg-slate-800 text-slate-100 hover:bg-slate-700;
+    @apply bg-alt text-ink hover:bg-[#e8e8ed];
   }
   .btn-danger {
-    @apply bg-rose-700/80 text-white hover:bg-rose-600;
+    @apply bg-red text-white hover:bg-red-hover;
   }
   .btn-ghost {
-    @apply text-slate-300 hover:bg-slate-800 hover:text-white;
+    @apply text-blue hover:bg-alt;
   }
   .btn-outline {
-    @apply border border-slate-700 text-slate-300 hover:bg-slate-800 hover:text-white;
+    @apply border border-hairline text-ink hover:bg-alt;
   }
 
   .input {
-    @apply h-9 rounded-md bg-slate-900 border border-slate-700 px-3 text-sm text-slate-100 placeholder:text-slate-500 hover:border-slate-600;
-    transition: border-color 150ms ease;
+    @apply h-10 rounded-xl bg-white border border-hairline px-3 text-sm text-ink placeholder:text-faint;
+    transition:
+      border-color 150ms ease,
+      box-shadow 150ms ease;
+  }
+  .input:hover {
+    border-color: var(--color-faint);
+  }
+  .input:focus {
+    outline: none;
+    border-color: var(--color-blue-button);
+    box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.35);
   }
 
   .link {
-    @apply text-emerald-300 underline underline-offset-2 hover:text-emerald-200;
-    transition: color 150ms ease;
+    @apply text-blue hover:underline underline-offset-2;
   }
 
-  .pressable {
+  .card {
+    @apply rounded-[18px] bg-white p-6 shadow-card;
+  }
+  .card-link {
+    @apply rounded-[18px] bg-white p-6 shadow-card;
     transition:
-      border-color 150ms ease,
+      box-shadow 150ms ease,
       transform 160ms var(--ease-out);
   }
-  .pressable:active {
+  .card-link:hover {
+    box-shadow: var(--shadow-card-hover);
+  }
+  .card-link:active {
     transform: scale(0.99);
+  }
+
+  /* Home page product tiles, light and dark. */
+  .tile {
+    @apply rounded-[18px] px-6 pt-12 pb-10 text-center flex flex-col items-center;
+  }
+  .tile-light {
+    @apply bg-alt text-ink;
+  }
+  .tile-dark {
+    @apply bg-black text-white;
   }
 
   /* Elements that appear in response to a state change (errors, confirmations, results). */
@@ -104,7 +198,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .btn:active:not(:disabled),
-  .pressable:active {
+  .card-link:active {
     transform: none;
   }
   .enter {
@@ -114,11 +208,10 @@
   }
 }
 
-/* Category accents shared by cards and badges */
-.accent-academic { --accent: 52 211 153; }
-.accent-games { --accent: 251 113 133; }
-.accent-tools { --accent: 56 189 248; }
-.accent-assistant { --accent: 251 191 36; }
-.card-accent {
-  border-top: 3px solid rgb(var(--accent) / 0.8);
+@media (prefers-reduced-transparency: reduce) {
+  .globalnav {
+    background: #fff;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
 }

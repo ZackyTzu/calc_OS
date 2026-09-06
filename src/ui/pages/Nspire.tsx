@@ -35,7 +35,7 @@ export function Nspire() {
   return (
     <div className="space-y-8">
       <div className="flex items-center justify-between flex-wrap gap-3">
-        <h1 className="text-2xl font-bold">TI-Nspire CX II</h1>
+        <h1 className="text-4xl font-semibold">TI-Nspire CX II</h1>
         <Badge tone="amber">experimental: not yet tested on hardware</Badge>
       </div>
       {n.error && <ErrorBox message={n.error} onClose={n.clearError} />}
@@ -46,15 +46,15 @@ export function Nspire() {
 
       {n.status === 'needs-isolation' && (
         <Card className="space-y-3">
-          <p className="text-slate-300">The Nspire transfer engine (web-libnspire, the same code behind n-link) runs in a background thread and needs a browser feature called cross-origin isolation. Enabling it installs a small service worker for this site and reloads the page. Nothing else changes.</p>
+          <p className="text-ink">The Nspire transfer engine (web-libnspire, the same code behind n-link) runs in a background thread and needs a browser feature called cross-origin isolation. Enabling it installs a small service worker for this site and reloads the page. Nothing else changes.</p>
           <Button onClick={n.enableIsolation}>Enable Nspire transfers (reloads the page)</Button>
-          <p className="text-xs text-slate-500">{n.reason}</p>
+          <p className="text-xs text-faint">{n.reason}</p>
         </Card>
       )}
 
       {n.status === 'disconnected' && (
         <Card className="space-y-3">
-          <p className="text-slate-300">Plug in the TI-Nspire CX II with its USB cable and turn it on, then connect. On Windows the CX II needs no extra driver; the older CX needs WinUSB (Zadig).</p>
+          <p className="text-ink">Plug in the TI-Nspire CX II with its USB cable and turn it on, then connect. On Windows the CX II needs no extra driver; the older CX needs WinUSB (Zadig).</p>
           <div className="flex gap-2 flex-wrap">
             <Button onClick={n.connect}>Connect Nspire</Button>
             <Button variant="secondary" onClick={n.selfTest}>Test the transfer engine</Button>
@@ -62,15 +62,15 @@ export function Nspire() {
           {engineLine && <Notice>{engineLine}.</Notice>}
         </Card>
       )}
-      {n.status === 'connecting' && <Card className="flex items-center gap-2 text-slate-300"><Spinner /> Connecting</Card>}
+      {n.status === 'connecting' && <Card className="flex items-center gap-2 text-ink"><Spinner /> Connecting</Card>}
 
       {connected && n.info && (
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <Card><div className="text-xs text-slate-400">Model</div><div className="font-semibold">{n.info.name}</div><div className="text-xs text-slate-500">{typeof n.info.hw_type === 'string' ? n.info.hw_type : 'unknown hardware'}</div></Card>
-          <Card><div className="text-xs text-slate-400">Operating system</div><div className="font-semibold tabular-nums">{version}</div><div className="text-xs text-slate-500">{pythonAvailable ? 'Python available' : 'Python needs OS 5.2+'}</div></Card>
-          <Card><div className="text-xs text-slate-400">Storage free</div><div className="font-semibold tabular-nums">{formatBytes(n.info.free_storage)}</div><div className="text-xs text-slate-500 tabular-nums">of {formatBytes(n.info.total_storage)}</div></Card>
+          <Card><div className="text-xs text-muted">Model</div><div className="font-semibold">{n.info.name}</div><div className="text-xs text-faint">{typeof n.info.hw_type === 'string' ? n.info.hw_type : 'unknown hardware'}</div></Card>
+          <Card><div className="text-xs text-muted">Operating system</div><div className="font-semibold tabular-nums">{version}</div><div className="text-xs text-faint">{pythonAvailable ? 'Python available' : 'Python needs OS 5.2+'}</div></Card>
+          <Card><div className="text-xs text-muted">Storage free</div><div className="font-semibold tabular-nums">{formatBytes(n.info.free_storage)}</div><div className="text-xs text-faint tabular-nums">of {formatBytes(n.info.total_storage)}</div></Card>
           <Card>
-            <div className="text-xs text-slate-400">Battery</div>
+            <div className="text-xs text-muted">Battery</div>
             <div className="font-semibold">{typeof n.info.battery === 'string' ? n.info.battery : 'unknown'}{n.info.is_charging ? ', charging' : ''}</div>
             <Button variant="ghost" size="sm" className="mt-1 -ml-3" onClick={n.disconnect}>Disconnect</Button>
           </Card>
@@ -104,26 +104,26 @@ export function Nspire() {
               <Button type="button" variant="ghost" size="sm" onClick={() => setNewFolder(null)}>Cancel</Button>
             </form>
           )}
-          <div className="rounded-xl border border-slate-800 overflow-hidden">
+          <div className="rounded-xl border border-hairline overflow-hidden">
             <table className="w-full text-sm">
-              <thead className="bg-slate-900 text-slate-400 text-left"><tr><th className="px-3 py-2 font-medium">Name</th><th className="px-3 py-2 text-right font-medium">Size</th><th className="px-3 py-2"></th></tr></thead>
+              <thead className="bg-alt text-muted text-left"><tr><th className="px-3 py-2 font-medium">Name</th><th className="px-3 py-2 text-right font-medium">Size</th><th className="px-3 py-2"></th></tr></thead>
               <tbody>
                 {(n.files ?? []).map((f) => (
-                  <tr key={f.path} className="border-t border-slate-800 row-hover hover:bg-slate-900/60">
+                  <tr key={f.path} className="border-t border-hairline row-hover hover:bg-alt">
                     <td className="px-3 py-2 font-mono">
                       {f.isDir ? (
-                        <button type="button" className="text-emerald-300 hover:underline underline-offset-2 rounded" onClick={() => n.open(childPath(f.path))}><FolderIcon className="inline mr-1.5 -mt-0.5" />{f.path}</button>
+                        <button type="button" className="link rounded" onClick={() => n.open(childPath(f.path))}><FolderIcon className="inline mr-1.5 -mt-0.5" />{f.path}</button>
                       ) : (
-                        <span><FileIcon className="inline mr-1.5 -mt-0.5 text-slate-400" />{f.path}</span>
+                        <span><FileIcon className="inline mr-1.5 -mt-0.5 text-muted" />{f.path}</span>
                       )}
                     </td>
-                    <td className="px-3 py-2 text-right text-slate-300 tabular-nums">{f.isDir ? '' : formatBytes(f.size)}</td>
+                    <td className="px-3 py-2 text-right text-ink tabular-nums">{f.isDir ? '' : formatBytes(f.size)}</td>
                     <td className="px-3 py-2 text-right whitespace-nowrap">
                       <ConfirmButton label="Delete" confirmLabel={f.isDir ? 'Delete folder and contents' : `Delete ${f.path}`} disabled={n.status === 'busy'} onConfirm={() => n.remove(f)} />
                     </td>
                   </tr>
                 ))}
-                {n.files && n.files.length === 0 && <tr><td colSpan={3} className="px-3 py-6 text-center text-slate-500">Empty folder.</td></tr>}
+                {n.files && n.files.length === 0 && <tr><td colSpan={3} className="px-3 py-6 text-center text-faint">Empty folder.</td></tr>}
               </tbody>
             </table>
           </div>
@@ -134,14 +134,14 @@ export function Nspire() {
               accept=".tns"
               aria-label="Choose a .tns document"
               onChange={(e) => { pickFile(e.target.files); e.target.value = ''; }}
-              className="block text-sm text-slate-300 file:mr-3 file:h-8 file:px-3 file:rounded-md file:border-0 file:bg-slate-800 file:text-slate-100 file:text-sm file:font-medium hover:file:bg-slate-700 file:transition-colors"
+              className="block text-sm text-ink file:mr-3 file:h-8 file:px-3 file:rounded-md file:border-0 file:bg-alt file:text-ink file:text-sm file:font-medium hover:file:bg-[#e8e8ed] file:transition-colors"
             />
             {fileError && <ErrorBox message={fileError} onClose={() => setFileError(null)} />}
             {pendingName && pendingBytes && (
               <div className="enter space-y-2">
                 <div className="flex items-center gap-3 text-sm flex-wrap">
                   <span className="font-mono">{pendingName}</span>
-                  <span className="text-slate-400 tabular-nums">{formatBytes(pendingBytes.length)}</span>
+                  <span className="text-muted tabular-nums">{formatBytes(pendingBytes.length)}</span>
                   <Button disabled={n.status === 'busy'} onClick={async () => { await n.upload(pendingName, pendingBytes).catch(() => undefined); setPendingName(null); setPendingBytes(null); }}>
                     {n.status === 'busy' && n.progress ? <><Spinner /> Sending</> : `Send to ${n.path}`}
                   </Button>
@@ -150,7 +150,7 @@ export function Nspire() {
                 {n.status === 'busy' && n.progress && (
                   <div className="enter space-y-1">
                     <Progress value={n.progress.total - n.progress.remaining} max={n.progress.total} />
-                    <p className="text-xs text-slate-400 tabular-nums">{Math.round((100 * (n.progress.total - n.progress.remaining)) / Math.max(1, n.progress.total))}%</p>
+                    <p className="text-xs text-muted tabular-nums">{Math.round((100 * (n.progress.total - n.progress.remaining)) / Math.max(1, n.progress.total))}%</p>
                   </div>
                 )}
               </div>
@@ -162,24 +162,24 @@ export function Nspire() {
       <Section title="Programs for the Nspire">
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {nspireEntries.map((e) => (
-            <Link key={e.id} to={`/library/${e.id}`} className="pressable rounded-xl border border-slate-800 bg-slate-900/60 p-4 hover:border-slate-600">
+            <Link key={e.id} to={`/library/${e.id}`} className="card-link">
               <div className="font-semibold">{e.name}</div>
-              <div className="text-sm text-slate-400">{e.tagline}</div>
+              <div className="text-sm text-muted">{e.tagline}</div>
               <div className="mt-2"><Badge>{e.kind === 'python' ? 'Python' : 'Lua'}</Badge></div>
             </Link>
           ))}
         </div>
       </Section>
 
-      <Card className="text-sm text-slate-300 space-y-2">
-        <h3 className="font-semibold text-white">How the Nspire support works</h3>
+      <Card className="text-sm text-ink space-y-2">
+        <h3 className="font-semibold text-ink">How the Nspire support works</h3>
         <p>The CX II speaks a different USB protocol than the TI-84 family. calc_OS uses <a className="link" href="https://github.com/lights0123/n-link" target="_blank" rel="noreferrer">n-link's</a> open-source engine (web-libnspire) for the transfer, and writes .tns documents the same way the Luna tool does. calc_OS programs for the Nspire are Python (CX II, OS 5.2 or newer): open the document, then run the script with menu, then Run.</p>
         <p>This part has been tested against reference files but not yet on a real calculator. If something fails, please <a className="link" href="https://github.com/ZackyTzu/calc_OS/issues" target="_blank" rel="noreferrer">report it</a> with the connection log.</p>
       </Card>
 
-      <details className="text-xs text-slate-500">
+      <details className="text-xs text-faint">
         <summary className="cursor-pointer rounded-md">Connection log ({n.log.length})</summary>
-        <pre className="mt-2 max-h-64 overflow-auto bg-slate-950 border border-slate-800 rounded p-2 font-mono">{n.log.join('\n')}</pre>
+        <pre className="mt-2 max-h-64 overflow-auto bg-alt border border-hairline rounded p-2 font-mono">{n.log.join('\n')}</pre>
       </details>
     </div>
   );

@@ -86,20 +86,20 @@ export function ProgramDetail() {
 
   return (
     <div className="space-y-6">
-      <Link to="/library" className="text-sm text-slate-400 hover:text-white transition-colors">Back to the library</Link>
+      <Link to="/library" className="text-sm text-muted hover:text-ink transition-colors">Back to the library</Link>
       <div className="grid lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 space-y-5">
           <div>
             <div className="flex flex-wrap items-center gap-2 mb-2">
-              <h1 className="text-3xl font-bold mr-2">{entry.name}</h1>
+              <h1 className="text-4xl font-semibold mr-2">{entry.name}</h1>
               <Badge>{entry.calculator === 'ce' ? 'TI-84 Plus CE' : 'TI-Nspire CX II'}</Badge>
               <Badge>{CATEGORY_LABELS[entry.category]}</Badge>
               {entry.version && <Badge>{entry.version}</Badge>}
             </div>
-            <p className="text-slate-300">{entry.description}</p>
+            <p className="text-ink">{entry.description}</p>
           </div>
           {entry.features && (
-            <ul className="list-disc list-inside text-slate-300 space-y-1">
+            <ul className="list-disc list-inside text-ink space-y-1">
               {entry.features.map((f) => <li key={f}>{f}</li>)}
             </ul>
           )}
@@ -109,8 +109,8 @@ export function ProgramDetail() {
               <div className="grid sm:grid-cols-2 gap-3 text-sm">
                 {subject.topics.map((t) => (
                   <div key={t.id}>
-                    <div className="font-medium text-emerald-300">{t.menu}</div>
-                    <div className="text-slate-400">{t.equations.length ? t.equations.map((e) => e.display).join(', ') : 'Reference notes'}</div>
+                    <div className="font-medium text-ink">{t.menu}</div>
+                    <div className="text-muted">{t.equations.length ? t.equations.map((e) => e.display).join(', ') : 'Reference notes'}</div>
                   </div>
                 ))}
               </div>
@@ -128,11 +128,11 @@ export function ProgramDetail() {
           {preview && <CalcScreen preview={preview} calculator={entry.calculator} caption="First screen, simulated from the program" />}
           <Card className="space-y-3">
             <CompatBadge compat={compat} />
-            <ul className="text-sm text-slate-300 space-y-1">
+            <ul className="text-sm text-ink space-y-1">
               {compat.details.map((d) => <li key={d}>{d}</li>)}
             </ul>
-            {size !== null && <p className="text-xs text-slate-400 tabular-nums">Size on calculator: {formatBytes(size)}</p>}
-            {installedAlready && <p className="text-xs text-emerald-300">Already on your calculator. Reinstalling replaces {installedNames.join(', ')}.</p>}
+            {size !== null && <p className="text-xs text-muted tabular-nums">Size on calculator: {formatBytes(size)}</p>}
+            {installedAlready && <p className="text-xs text-green">Already on your calculator. Reinstalling replaces {installedNames.join(', ')}.</p>}
             {entry.calculator === 'nspire' && entry.source.type !== 'external' ? (
               <div className="flex flex-col gap-2">
                 {nspire.status === 'connected' || nspire.status === 'busy' ? (
@@ -160,7 +160,7 @@ export function ProgramDetail() {
                     {sending && (
                       <div className="enter space-y-1">
                         <Progress value={progress!.sent} max={progress!.size} />
-                        <p className="text-xs text-slate-400 tabular-nums">{Math.round((100 * progress!.sent) / Math.max(1, progress!.size))}% of {formatBytes(progress!.size)}</p>
+                        <p className="text-xs text-muted tabular-nums">{Math.round((100 * progress!.sent) / Math.max(1, progress!.size))}% of {formatBytes(progress!.size)}</p>
                       </div>
                     )}
                   </>
@@ -176,7 +176,7 @@ export function ProgramDetail() {
                 <a className="btn btn-primary w-full" href={entry.source.url} target="_blank" rel="noreferrer">
                   Get it from the author <ExternalIcon />
                 </a>
-                <p className="text-slate-400">{entry.source.note}</p>
+                <p className="text-muted">{entry.source.note}</p>
                 <Link to="/calculator" className="link">Then install the file from the My calculator page.</Link>
               </div>
             )}
@@ -185,10 +185,10 @@ export function ProgramDetail() {
             {(localError || error) && <ErrorBox message={localError ?? error!} onClose={() => { setLocalError(null); clearError(); }} />}
           </Card>
           <Card className="text-sm space-y-1">
-            <div><span className="text-slate-400">Author:</span> {entry.author}</div>
-            <div><span className="text-slate-400">License:</span> {entry.license}</div>
+            <div><span className="text-muted">Author:</span> {entry.author}</div>
+            <div><span className="text-muted">License:</span> {entry.license}</div>
             {entry.homepage && <div><a className="link inline-flex items-center gap-1" href={entry.homepage} target="_blank" rel="noreferrer">Project page <ExternalIcon /></a></div>}
-            {entry.requires.length > 0 && <div><span className="text-slate-400">Requires:</span> {entry.requires.map((r) => ({ asm: 'assembly support', clibs: 'CE C libraries' })[r]).join(', ')}</div>}
+            {entry.requires.length > 0 && <div><span className="text-muted">Requires:</span> {entry.requires.map((r) => ({ asm: 'assembly support', clibs: 'CE C libraries' })[r]).join(', ')}</div>}
             <div className="flex flex-wrap gap-1 pt-1">{entry.tags.map((t) => <Badge key={t}>{t}</Badge>)}</div>
           </Card>
         </div>

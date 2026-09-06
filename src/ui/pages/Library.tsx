@@ -47,11 +47,11 @@ export function Library() {
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap gap-3 items-center">
-        <h1 className="text-2xl font-bold mr-auto">Library</h1>
+        <h1 className="text-4xl font-semibold mr-auto">Library</h1>
         <input type="search" value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search programs" aria-label="Search programs" className="input w-56" />
         {connected && (
-          <label className="flex items-center gap-2 text-sm text-slate-300 cursor-pointer select-none">
-            <input type="checkbox" className="accent-emerald-500" checked={onlyMine} onChange={(e) => setOnlyMine(e.target.checked)} />
+          <label className="flex items-center gap-2 text-sm text-ink cursor-pointer select-none">
+            <input type="checkbox" className="accent-blue-button" checked={onlyMine} onChange={(e) => setOnlyMine(e.target.checked)} />
             Works on my {info?.model ?? 'calculator'}
           </label>
         )}
@@ -68,14 +68,14 @@ export function Library() {
             key={c}
             onClick={() => set('category', c)}
             aria-pressed={category === c}
-            className={`btn btn-sm ${category === c ? 'bg-emerald-700 text-white hover:bg-emerald-600' : 'btn-outline'}`}
+            className={`btn btn-sm ${category === c ? 'bg-ink text-white hover:bg-black' : 'btn-outline'}`}
           >
             {c === 'all' ? 'Everything' : CATEGORY_LABELS[c as Category]}
           </button>
         ))}
       </div>
       {items.length === 0 && (
-        <p className="enter text-slate-400">
+        <p className="enter text-muted">
           Nothing matches.{' '}
           {filtered && <button type="button" className="link" onClick={clearFilters}>Clear filters</button>}
         </p>
@@ -84,18 +84,18 @@ export function Library() {
         {items.map((e) => {
           const compat = compatibility(e, info, variables);
           return (
-            <Link key={e.id} to={`/library/${e.id}`} className={`accent-${e.category} card-accent pressable rounded-xl border border-slate-800 bg-slate-900/60 p-5 hover:border-slate-600 flex flex-col gap-2`}>
+            <Link key={e.id} to={`/library/${e.id}`} className="card-link flex flex-col gap-2">
               <div className="flex items-start justify-between gap-2">
                 <h2 className="font-semibold text-lg leading-tight">{e.name}</h2>
                 <Badge>{e.calculator === 'ce' ? 'TI-84 CE' : 'Nspire'}</Badge>
               </div>
-              <p className="text-sm text-slate-300 flex-1">{e.tagline}</p>
+              <p className="text-sm text-muted flex-1">{e.tagline}</p>
               <div className="flex flex-wrap gap-1.5 items-center">
                 <Badge tone="slate">{CATEGORY_LABELS[e.category]}</Badge>
                 <Badge tone="slate">{KIND_LABELS[e.kind]}</Badge>
                 <CompatBadge compat={compat} />
               </div>
-              <p className="text-xs text-slate-500">by {e.author}, {e.license}</p>
+              <p className="text-xs text-faint">by {e.author}, {e.license}</p>
             </Link>
           );
         })}
