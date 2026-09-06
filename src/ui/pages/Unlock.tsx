@@ -50,6 +50,15 @@ export function Unlock() {
         <p className="text-sm text-slate-300"><Link className="link" to="/library/cesium">Cesium</Link> lists all programs with icons and runs assembly programs directly. Without a shell, run assembly programs with <b>Asm(</b> from the catalog: <b>Asm(prgmNAME)</b>.</p>
       </Card>
       <Card className="space-y-2">
+        <h2 className="font-semibold">If something goes wrong</h2>
+        <ul className="text-sm text-slate-300 space-y-1 list-disc list-inside">
+          <li><b>ERR:INVALID</b> when starting a game from the prgm menu: on OS 5.5 and newer assembly programs cannot start from there. Launch them from arTIfiCE's list, from Cesium, or with <b>Asm(prgmNAME)</b>.</li>
+          <li><b>Need LibLoad</b> and a tiny.cc address on the screen: the game wants the <Link className="link" to="/library/clibs">CE C libraries</Link>. Install them once from the library and run the game again.</li>
+          <li><b>ERR:MEMORY</b> or a RAM warning: games belong in the archive. calc_OS installs there; for files sent another way, press <b>2nd</b>, <b>+</b>, <b>2</b>, <b>7</b> and press <b>enter</b> on every program without a star to archive it.</li>
+          <li>The calculator freezes: hold the reset button on the back for two seconds. RAM is cleared, the archive and everything installed there survive, then run arTIfiCE again.</li>
+        </ul>
+      </Card>
+      <Card className="space-y-2">
         <h2 className="font-semibold">Step 4: install games</h2>
         <p className="text-sm text-slate-300">Open the <Link className="link" to="/library?category=games">Games</Link> section. Programs with an open licence install with one click; for the rest, download from the author's page and drop the files onto My calculator. For Pokemon, Zelda, Mario Land and other Game Boy games, convert your own cartridge ROMs on the <Link className="link" to="/gameboy">Game Boy</Link> page.</p>
       </Card>
