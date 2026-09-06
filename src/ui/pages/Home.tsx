@@ -2,7 +2,9 @@ import { Link } from 'react-router-dom';
 import { useCalculator } from '../../state/calculator';
 import { Button, Card } from '../components/ui';
 import { catalog, CATEGORY_LABELS, type Category } from '../../lib/library/catalog';
-import { subjects } from '../../lib/programs';
+import { subjects, programByName } from '../../lib/programs';
+import { CalcScreen } from '../components/CalcScreen';
+import { previewTiBasic } from '../../lib/tibasic/preview';
 
 const ICONS: Record<Category, string> = { academic: '📚', games: '🎮', tools: '🧰', assistant: '🤖' };
 
@@ -33,6 +35,8 @@ export function Home() {
             <div><dt className="text-slate-400">Installs needed</dt><dd className="text-2xl font-semibold">0</dd></div>
           </dl>
         </div>
+        <div className="space-y-4">
+        <CalcScreen preview={previewTiBasic(programByName('MATHBOT')!.source)} calculator="ce" caption="MathBot's main menu, as it appears on the calculator" />
         <Card className="space-y-3">
           <h2 className="font-semibold">How it works</h2>
           <ol className="list-decimal list-inside space-y-2 text-slate-300 text-sm">
@@ -42,6 +46,7 @@ export function Home() {
             <li>Run it with <b>prgm → name → enter</b>. Delete anything from the My calculator page.</li>
           </ol>
         </Card>
+        </div>
       </section>
 
       <section className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">

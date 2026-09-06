@@ -9,6 +9,8 @@ import { tnsFor } from '../../lib/library/install';
 import { Badge, Button, Card, CompatBadge, ErrorBox } from '../components/ui';
 import { SourceView } from '../components/SourceView';
 import { subjects } from '../../lib/programs';
+import { CalcScreen } from '../components/CalcScreen';
+import { previewPython, previewTiBasic } from '../../lib/tibasic/preview';
 
 export function ProgramDetail() {
   const { id } = useParams();
@@ -20,6 +22,10 @@ export function ProgramDetail() {
   const [size, setSize] = useState<number | null>(null);
 
   const source = useMemo(() => (entry ? generatedSource(entry) : null), [entry]);
+  const preview = useMemo(() => {
+    if (!entry || !source) return null;
+    return entry.calculator === 'nspire' ? previewPython(source) : previewTiBasic(source);
+  }, [entry, source]);
   const subject = entry?.source.type === 'generated' ? subjects.find((s) => s.program === (entry.source as { subject: string }).subject) : undefined;
 
   useEffect(() => {
@@ -119,6 +125,7 @@ export function ProgramDetail() {
         </div>
 
         <div className="space-y-4">
+          {preview && <CalcScreen preview={preview} calculator={entry.calculator} caption="First screen, simulated from the program" />}
           <Card className="space-y-3">
             <CompatBadge compat={compat} />
             <ul className="text-sm text-slate-300 space-y-1">
