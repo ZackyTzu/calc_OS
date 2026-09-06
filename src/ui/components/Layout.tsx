@@ -6,6 +6,7 @@ const links = [
   ['/library', 'Library'],
   ['/calculator', 'My calculator'],
   ['/unlock', 'Unlock games'],
+  ['/gameboy', 'Game Boy'],
   ['/nspire', 'Nspire CX II'],
   ['/about', 'About'],
 ] as const;

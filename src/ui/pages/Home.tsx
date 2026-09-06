@@ -8,7 +8,7 @@ import { previewTiBasic } from '../../lib/tibasic/preview';
 
 const CATEGORY_BLURBS: Record<Category, string> = {
   academic: 'AP Physics 1, AP Precalculus and AP Statistics. Every formula solves for any variable and has notes.',
-  games: 'TI-BASIC games that run on every TI-84 Plus CE, plus the classic assembly games and Nspire Lua games.',
+  games: 'TI-BASIC games for every TI-84 Plus CE, the classic assembly games, a Game Boy emulator for your own cartridges, and Nspire Lua games.',
   tools: 'The CE C libraries, the Cesium shell and the arTIfiCE jailbreak that assembly programs need.',
   assistant: 'MathBot answers typed math questions offline, with steps, on the CE and the Nspire.',
 };

@@ -10,6 +10,10 @@ export function Unlock() {
       <p className="text-slate-300">
         Games like Pac-Man, Oiram and Flappy Bird are written in C or assembly. Since 2020 TI's operating system refuses to run them unless a jailbreak restores that ability. What you can do depends entirely on your OS version. Find it on the calculator with <b>2nd</b> then <b>+</b> then <b>About</b>, or just connect it here.
       </p>
+      <Card className="text-sm text-slate-300 space-y-1">
+        <h2 className="font-semibold text-white">Seen a video that opens a file inside the Cabri Jr. app?</h2>
+        <p>That was the first arTIfiCE (2020): a booby-trapped Cabri Jr. figure. TI closed that hole in OS 5.8.3 (May 2025). The current arTIfiCE v2.1 uses a different flaw, is a plain program file run from the <b>prgm</b> menu, and works on OS 5.3 through 5.8.4. The steps below are for it. On OS 5.8.5 and newer neither version works.</p>
+      </Card>
       {info && (
         <Card>
           Your calculator: <b>{info.model}</b>, OS <b>{info.osVersion}</b>.{' '}
@@ -47,7 +51,7 @@ export function Unlock() {
       </Card>
       <Card className="space-y-2">
         <h2 className="font-semibold">Step 4: install games</h2>
-        <p className="text-sm text-slate-300">Open the <Link className="link" to="/library?category=games">Games</Link> section. Programs with an open licence install with one click; for the rest, download from the author's page and drop the files onto My calculator.</p>
+        <p className="text-sm text-slate-300">Open the <Link className="link" to="/library?category=games">Games</Link> section. Programs with an open licence install with one click; for the rest, download from the author's page and drop the files onto My calculator. For Pokemon, Zelda, Mario Land and other Game Boy games, convert your own cartridge ROMs on the <Link className="link" to="/gameboy">Game Boy</Link> page.</p>
       </Card>
     </div>
   );

@@ -7,7 +7,8 @@ Plug in a TI-84 Plus CE, click *Connect*, and:
 
 - install generated study programs: **AP Physics 1**, **AP Precalculus**, **AP Statistics** (every formula solves for any variable and has notes),
 - install **MathBot**, an offline math assistant that answers typed questions (SOLVE 3X-7=11, FACTOR 360, SQRT 72, MEAN 4,8,15, DERIV X^2 AT 3) with steps,
-- install TI-BASIC games (2048, Snake, Tic-Tac-Toe, Blackjack, Video Poker) and open-licensed community tools, or drop any `.8xp` / `.8xv` / `.8xg` / `.zip` you downloaded elsewhere,
+- install TI-BASIC games (2048, Snake, Tic-Tac-Toe, Blackjack, Video Poker) and open-licensed community programs (TI-Boy CE, CEleste, Open Adventure, Cesium, the CE C libraries), or drop any `.8xp` / `.8xv` / `.8xg` / `.zip` you downloaded elsewhere,
+- convert a Game Boy ROM of a cartridge you own into TI-Boy CE AppVars in the browser (`src/lib/tiboy/romgen.ts`, a port of tiboyce-romgen verified byte for byte against the C tool) and install it with the emulator in one click,
 - see every program and variable on the calculator, save copies, and delete what you no longer need.
 
 For the **TI-Nspire CX II** the same three study programs and a Python MathBot (answers questions typed in plain words) are generated as `.tns` documents, with an experimental in-browser transfer (see below).
@@ -23,6 +24,7 @@ Everything runs in the browser over WebUSB (Chrome, Edge, Brave). No software to
 | TI-BASIC tokenizer | `src/lib/tibasic/` | Text to tokens and back using the [TI-Toolkit token sheet](https://github.com/TI-Toolkit/tokens). |
 | Program generator | `src/lib/programs/` | Content is data (formulas, variables, rearrangements, notes). A builder emits menu-driven TI-BASIC; a linter and an expression evaluator prove every rearrangement is consistent before anything ships. |
 | Library | `src/lib/library/` | Catalog of installable entries with licence and compatibility rules. |
+| Game Boy | `src/lib/tiboy/` | Port of TI-Boy CE's romgen: page trimming, bin packing into 64 KB AppVars, metadata AppVar. Tested against SHA-256 hashes of the original tool's output. |
 | Nspire | `src/lib/nspire/` | `.tns` writer compatible with Luna (custom zip container, 3DES-CTR document keystream, verified byte-for-byte against Luna's output); Python program generator for the same content; WebUSB transport around [web-libnspire](https://www.npmjs.com/package/web-libnspire) (n-link's engine) running in a worker with a SharedArrayBuffer bridge. |
 | UI | `src/ui/` | React + Tailwind. |
 

@@ -20,7 +20,7 @@ export function Privacy() {
         <ul className="list-disc list-inside space-y-1">
           <li><b>USB access.</b> Your browser asks for permission before calc_OS can talk to a calculator, and the permission applies to this site only. You can revoke it at any time in the browser's site settings.</li>
           <li><b>Calculator contents.</b> The list of variables and any program you save are read into memory so the page can show them to you. They are discarded when you close the tab.</li>
-          <li><b>Files you provide.</b> Files dropped onto the My calculator or Nspire page are parsed locally. Downloads offered by the site are generated locally.</li>
+          <li><b>Files you provide.</b> Files dropped onto the My calculator, Nspire or Game Boy page are parsed locally, including Game Boy ROM files, which are converted entirely in your browser. Downloads offered by the site are generated locally.</li>
           <li><b>Storage.</b> calc_OS does not use cookies, localStorage or any other persistent browser storage. The only thing it can install is described in the next point.</li>
           <li><b>Service worker for Nspire transfers.</b> If you enable Nspire transfers, the site registers a small service worker that adds two HTTP headers to the pages it serves so the transfer engine can run. It stores no data and does not track anything. You can remove it from the browser's site settings.</li>
         </ul>

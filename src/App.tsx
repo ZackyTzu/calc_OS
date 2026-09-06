@@ -9,6 +9,7 @@ import { Nspire } from './ui/pages/Nspire';
 import { About } from './ui/pages/About';
 import { Terms } from './ui/pages/Terms';
 import { Privacy } from './ui/pages/Privacy';
+import { GameBoy } from './ui/pages/GameBoy';
 
 export default function App() {
   return (
@@ -19,6 +20,7 @@ export default function App() {
         <Route path="/library/:id" element={<ProgramDetail />} />
         <Route path="/calculator" element={<Calculator />} />
         <Route path="/unlock" element={<Unlock />} />
+        <Route path="/gameboy" element={<GameBoy />} />
         <Route path="/nspire" element={<Nspire />} />
         <Route path="/about" element={<About />} />
         <Route path="/terms" element={<Terms />} />

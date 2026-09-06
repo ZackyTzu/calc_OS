@@ -22,6 +22,10 @@ My calculator / Nspire page) for anything that fails.
 7. My calculator → **Delete** `G2048`. Expected: it disappears from the list and from the calculator.
 8. Drop a `.zip` from ticalc.org onto the install box. Expected: the contained files are listed and install.
 9. If the OS is 5.8.4 or lower: Unlock guide → arTIfiCE → CE C libraries → Cesium → Oiram.
+10. Game Boy page → drop a .gb ROM of a cartridge you own → **Install TI-Boy CE and game**.
+    Expected: TIBOYCE, TIBoyDat, TIBoySkn plus `<NAME>`, `<NAME>R00`... appear in the archive.
+    On the calculator: `prgm` → `TIBOYCE` → the game shows in the list → `2nd` starts it.
+    Compare with the official converter (calc84maniac.github.io/tiboyce/converter): the files must be identical.
 
 Things that would indicate a protocol bug: a hang on connect (buffer negotiation), `ERR:`/garbage
 after install (variable header attributes), the calculator showing a *Receive* prompt (mode set),
