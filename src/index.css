@@ -1,12 +1,118 @@
 @import "tailwindcss";
 
+@theme {
+  /* Strong ease-out for entering, exiting and press feedback. */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --default-transition-duration: 150ms;
+  --default-transition-timing-function: ease;
+}
+
 :root {
   color-scheme: dark;
 }
-body {
-  @apply bg-slate-950 text-slate-100 antialiased;
+
+@layer base {
+  body {
+    @apply bg-slate-950 text-slate-100 antialiased;
+  }
+  a {
+    color: inherit;
+  }
+  h1, h2, h3 {
+    text-wrap: balance;
+  }
+  p, li {
+    text-wrap: pretty;
+  }
+  ::selection {
+    background: rgb(52 211 153 / 0.3);
+  }
+  :focus-visible {
+    outline: 2px solid rgb(52 211 153);
+    outline-offset: 2px;
+  }
 }
-a { color: inherit; }
+
+@layer components {
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 h-9 px-3.5 rounded-md text-sm font-medium whitespace-nowrap select-none;
+    transition:
+      background-color 150ms ease,
+      color 150ms ease,
+      border-color 150ms ease,
+      transform 160ms var(--ease-out);
+  }
+  .btn:disabled {
+    @apply opacity-40 cursor-not-allowed;
+  }
+  .btn:active:not(:disabled) {
+    transform: scale(0.97);
+  }
+  .btn-sm {
+    @apply h-8 px-3 text-sm;
+  }
+  .btn-primary {
+    @apply bg-emerald-600 text-white hover:bg-emerald-500;
+  }
+  .btn-secondary {
+    @apply bg-slate-800 text-slate-100 hover:bg-slate-700;
+  }
+  .btn-danger {
+    @apply bg-rose-700/80 text-white hover:bg-rose-600;
+  }
+  .btn-ghost {
+    @apply text-slate-300 hover:bg-slate-800 hover:text-white;
+  }
+  .btn-outline {
+    @apply border border-slate-700 text-slate-300 hover:bg-slate-800 hover:text-white;
+  }
+
+  .input {
+    @apply h-9 rounded-md bg-slate-900 border border-slate-700 px-3 text-sm text-slate-100 placeholder:text-slate-500 hover:border-slate-600;
+    transition: border-color 150ms ease;
+  }
+
+  .link {
+    @apply text-emerald-300 underline underline-offset-2 hover:text-emerald-200;
+    transition: color 150ms ease;
+  }
+
+  .pressable {
+    transition:
+      border-color 150ms ease,
+      transform 160ms var(--ease-out);
+  }
+  .pressable:active {
+    transform: scale(0.99);
+  }
+
+  /* Elements that appear in response to a state change (errors, confirmations, results). */
+  .enter {
+    transition:
+      opacity 200ms var(--ease-out),
+      translate 200ms var(--ease-out);
+    @starting-style {
+      opacity: 0;
+      translate: 0 4px;
+    }
+  }
+
+  .row-hover {
+    transition: background-color 150ms ease;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn:active:not(:disabled),
+  .pressable:active {
+    transform: none;
+  }
+  .enter {
+    @starting-style {
+      translate: 0 0;
+    }
+  }
+}
 
 /* Category accents shared by cards and badges */
 .accent-academic { --accent: 52 211 153; }

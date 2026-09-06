@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useCalculator } from '../../state/calculator';
-import { Button, Card } from '../components/ui';
+import { Button, ButtonLink, Card, Spinner } from '../components/ui';
 import { catalog, CATEGORY_LABELS, type Category } from '../../lib/library/catalog';
 import { programByName } from '../../lib/programs';
 import { CalcScreen } from '../components/CalcScreen';
@@ -27,13 +27,14 @@ export function Home() {
           </p>
           <div className="flex gap-3 flex-wrap">
             {status === 'disconnected' && <Button onClick={connect}>Connect calculator</Button>}
-            {status === 'connected' && <Link to="/calculator"><Button>Open my calculator</Button></Link>}
-            <Link to="/library"><Button variant="secondary">Browse the library</Button></Link>
+            {status === 'connecting' && <Button disabled><Spinner /> Connecting</Button>}
+            {(status === 'connected' || status === 'busy') && <ButtonLink to="/calculator">Open my calculator</ButtonLink>}
+            <ButtonLink to="/library" variant="secondary">Browse the library</ButtonLink>
           </div>
           {status === 'unsupported' && (
             <p className="text-sm text-amber-200">Your browser cannot talk to USB devices. Use Chrome, Edge or Brave on a computer (WebUSB is not available in Safari or Firefox).</p>
           )}
-          {info && <p className="text-sm text-emerald-300">Connected: {info.model}, OS {info.osVersion}.</p>}
+          {info && <p className="enter text-sm text-emerald-300">Connected: {info.model}, OS {info.osVersion}.</p>}
         </div>
         <div className="space-y-4">
           <CalcScreen preview={previewTiBasic(programByName('MATHBOT')!.source)} calculator="ce" caption="MathBot's main menu, as it appears on the calculator" />
@@ -51,10 +52,10 @@ export function Home() {
 
       <section className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {(Object.keys(CATEGORY_LABELS) as Category[]).map((c) => (
-          <Link key={c} to={`/library?category=${c}`} className={`accent-${c} card-accent rounded-xl border border-slate-800 bg-slate-900/60 p-5 hover:border-slate-600 flex flex-col gap-2`}>
+          <Link key={c} to={`/library?category=${c}`} className={`accent-${c} card-accent pressable rounded-xl border border-slate-800 bg-slate-900/60 p-5 hover:border-slate-600 flex flex-col gap-2`}>
             <div className="font-semibold">{CATEGORY_LABELS[c]}</div>
             <div className="text-sm text-slate-400 flex-1">{CATEGORY_BLURBS[c]}</div>
-            <div className="text-xs text-slate-500">{counts[c] ?? 0} program{counts[c] === 1 ? '' : 's'}</div>
+            <div className="text-xs text-slate-500 tabular-nums">{counts[c] ?? 0} program{counts[c] === 1 ? '' : 's'}</div>
           </Link>
         ))}
       </section>
@@ -62,7 +63,7 @@ export function Home() {
       <Card className="text-sm text-slate-300 space-y-2">
         <h2 className="font-semibold text-base">Games on the TI-84 Plus CE: read this first</h2>
         <p>
-          Most popular CE games (Pac-Man, Oiram, Flappy Bird, Tetric A and others) are assembly programs. TI removed assembly support from the operating system in 2020. They still run if your calculator is on OS 5.4 or older, or on OS 5.5 to 5.8.4 after installing the arTIfiCE jailbreak. On OS 5.8.5 or newer there is currently no way to run them. TI-BASIC programs, including everything calc_OS generates, run on every OS. Connect your calculator and the library will tell you exactly what works. See <Link className="text-emerald-300 underline" to="/unlock">Unlock games</Link>.
+          Most popular CE games (Pac-Man, Oiram, Flappy Bird, Tetric A and others) are assembly programs. TI removed assembly support from the operating system in 2020. They still run if your calculator is on OS 5.4 or older, or on OS 5.5 to 5.8.4 after installing the arTIfiCE jailbreak. On OS 5.8.5 or newer there is currently no way to run them. TI-BASIC programs, including everything calc_OS generates, run on every OS. Connect your calculator and the library will tell you exactly what works. See <Link className="link" to="/unlock">Unlock games</Link>.
         </p>
       </Card>
     </div>

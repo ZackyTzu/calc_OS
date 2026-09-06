@@ -5,6 +5,8 @@ import { compatibility } from '../../lib/library/compat';
 import { useCalculator } from '../../state/calculator';
 import { Badge, CompatBadge } from '../components/ui';
 
+const KIND_LABELS = { tibasic: 'TI-BASIC', asm: 'Assembly / C', python: 'Python', lua: 'Lua', tns: 'Nspire document', appvar: 'AppVar' } as const;
+
 export function Library() {
   const [params, setParams] = useSearchParams();
   const category = (params.get('category') as Category | null) ?? 'all';
@@ -35,36 +37,54 @@ export function Library() {
     setParams(p);
   }
 
+  const filtered = category !== 'all' || calc !== 'all' || q.trim() !== '' || onlyMine;
+  function clearFilters() {
+    setQ('');
+    setOnlyMine(false);
+    setParams(new URLSearchParams());
+  }
+
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap gap-3 items-center">
         <h1 className="text-2xl font-bold mr-auto">Library</h1>
-        <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search…" className="bg-slate-900 border border-slate-700 rounded-md px-3 py-1.5 text-sm" />
+        <input type="search" value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search programs" aria-label="Search programs" className="input w-56" />
         {connected && (
-          <label className="flex items-center gap-2 text-sm text-slate-300 cursor-pointer">
-            <input type="checkbox" checked={onlyMine} onChange={(e) => setOnlyMine(e.target.checked)} />
+          <label className="flex items-center gap-2 text-sm text-slate-300 cursor-pointer select-none">
+            <input type="checkbox" className="accent-emerald-500" checked={onlyMine} onChange={(e) => setOnlyMine(e.target.checked)} />
             Works on my {info?.model ?? 'calculator'}
           </label>
         )}
-        <select value={calc} onChange={(e) => set('calc', e.target.value)} className="bg-slate-900 border border-slate-700 rounded-md px-3 py-1.5 text-sm">
+        <select value={calc} onChange={(e) => set('calc', e.target.value)} aria-label="Calculator" className="input">
           <option value="all">All calculators</option>
           <option value="ce">TI-84 Plus CE</option>
           <option value="nspire">TI-Nspire CX II</option>
         </select>
       </div>
-      <div className="flex gap-2 flex-wrap text-sm">
+      <div className="flex gap-2 flex-wrap" role="group" aria-label="Category">
         {(['all', ...Object.keys(CATEGORY_LABELS)] as const).map((c) => (
-          <button key={c} onClick={() => set('category', c)} className={`px-3 py-1 rounded-md border ${category === c ? 'bg-emerald-700 border-emerald-600 text-white' : 'border-slate-700 text-slate-300 hover:bg-slate-800'}`}>
+          <button
+            type="button"
+            key={c}
+            onClick={() => set('category', c)}
+            aria-pressed={category === c}
+            className={`btn btn-sm ${category === c ? 'bg-emerald-700 text-white hover:bg-emerald-600' : 'btn-outline'}`}
+          >
             {c === 'all' ? 'Everything' : CATEGORY_LABELS[c as Category]}
           </button>
         ))}
       </div>
-      {items.length === 0 && <p className="text-slate-400">Nothing matches.</p>}
+      {items.length === 0 && (
+        <p className="enter text-slate-400">
+          Nothing matches.{' '}
+          {filtered && <button type="button" className="link" onClick={clearFilters}>Clear filters</button>}
+        </p>
+      )}
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {items.map((e) => {
           const compat = compatibility(e, info, variables);
           return (
-            <Link key={e.id} to={`/library/${e.id}`} className={`accent-${e.category} card-accent rounded-xl border border-slate-800 bg-slate-900/60 p-5 hover:border-slate-600 flex flex-col gap-2`}>
+            <Link key={e.id} to={`/library/${e.id}`} className={`accent-${e.category} card-accent pressable rounded-xl border border-slate-800 bg-slate-900/60 p-5 hover:border-slate-600 flex flex-col gap-2`}>
               <div className="flex items-start justify-between gap-2">
                 <h2 className="font-semibold text-lg leading-tight">{e.name}</h2>
                 <Badge>{e.calculator === 'ce' ? 'TI-84 CE' : 'Nspire'}</Badge>
@@ -72,7 +92,7 @@ export function Library() {
               <p className="text-sm text-slate-300 flex-1">{e.tagline}</p>
               <div className="flex flex-wrap gap-1.5 items-center">
                 <Badge tone="slate">{CATEGORY_LABELS[e.category]}</Badge>
-                <Badge tone="slate">{{ tibasic: 'TI-BASIC', asm: 'Assembly / C', python: 'Python', lua: 'Lua', tns: 'Nspire document', appvar: 'AppVar' }[e.kind]}</Badge>
+                <Badge tone="slate">{KIND_LABELS[e.kind]}</Badge>
                 <CompatBadge compat={compat} />
               </div>
               <p className="text-xs text-slate-500">by {e.author}, {e.license}</p>

@@ -10,7 +10,7 @@ export function Terms() {
 
       <section className="space-y-2">
         <h2 className="font-semibold text-white">1. Who runs calc_OS</h2>
-        <p>calc_OS is a free, open-source website maintained by ZackyTzu and published from the GitHub repository <a className="underline" href="https://github.com/ZackyTzu/calc_OS" target="_blank" rel="noreferrer">github.com/ZackyTzu/calc_OS</a>. It is a personal project, not a company, and it is not affiliated with, endorsed by or supported by Texas Instruments.</p>
+        <p>calc_OS is a free, open-source website maintained by ZackyTzu and published from the GitHub repository <a className="link" href="https://github.com/ZackyTzu/calc_OS" target="_blank" rel="noreferrer">github.com/ZackyTzu/calc_OS</a>. It is a personal project, not a company, and it is not affiliated with, endorsed by or supported by Texas Instruments.</p>
       </section>
 
       <section className="space-y-2">
@@ -60,7 +60,7 @@ export function Terms() {
 
       <section className="space-y-2">
         <h2 className="font-semibold text-white">9. Contact</h2>
-        <p>Questions about these terms can be raised by opening an issue at <a className="underline" href="https://github.com/ZackyTzu/calc_OS/issues" target="_blank" rel="noreferrer">github.com/ZackyTzu/calc_OS/issues</a>. See also the <Link className="underline" to="/privacy">privacy policy</Link>.</p>
+        <p>Questions about these terms can be raised by opening an issue at <a className="link" href="https://github.com/ZackyTzu/calc_OS/issues" target="_blank" rel="noreferrer">github.com/ZackyTzu/calc_OS/issues</a>. See also the <Link className="link" to="/privacy">privacy policy</Link>.</p>
       </section>
     </article>
   );

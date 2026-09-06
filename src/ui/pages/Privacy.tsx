@@ -28,7 +28,7 @@ export function Privacy() {
 
       <section className="space-y-2">
         <h2 className="font-semibold text-white">3. Hosting</h2>
-        <p>The site is hosted on GitHub Pages. GitHub may log visitor IP addresses and requests to operate and secure the service, as described in the <a className="underline" href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement" target="_blank" rel="noreferrer">GitHub General Privacy Statement</a>. The maintainer does not receive or have access to those logs.</p>
+        <p>The site is hosted on GitHub Pages. GitHub may log visitor IP addresses and requests to operate and secure the service, as described in the <a className="link" href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement" target="_blank" rel="noreferrer">GitHub General Privacy Statement</a>. The maintainer does not receive or have access to those logs.</p>
       </section>
 
       <section className="space-y-2">
@@ -43,7 +43,7 @@ export function Privacy() {
 
       <section className="space-y-2">
         <h2 className="font-semibold text-white">6. Changes and contact</h2>
-        <p>If this policy changes, the date at the top will be updated and the previous versions remain in the repository history. Questions can be raised by opening an issue at <a className="underline" href="https://github.com/ZackyTzu/calc_OS/issues" target="_blank" rel="noreferrer">github.com/ZackyTzu/calc_OS/issues</a>. See also the <Link className="underline" to="/terms">terms and conditions</Link>.</p>
+        <p>If this policy changes, the date at the top will be updated and the previous versions remain in the repository history. Questions can be raised by opening an issue at <a className="link" href="https://github.com/ZackyTzu/calc_OS/issues" target="_blank" rel="noreferrer">github.com/ZackyTzu/calc_OS/issues</a>. See also the <Link className="link" to="/terms">terms and conditions</Link>.</p>
       </section>
     </article>
   );

@@ -30,8 +30,8 @@ export function Unlock() {
       <Card className="space-y-2">
         <h2 className="font-semibold">Step 1: arTIfiCE (OS 5.5 to 5.8.4 only)</h2>
         <ol className="text-sm text-slate-300 space-y-1 list-decimal list-inside">
-          <li>Download <code>arTIfiCE_v2.1.8xp</code> from the <a className="text-emerald-300 underline" href="https://yvantt.github.io/arTIfiCE/" target="_blank" rel="noreferrer">official arTIfiCE page</a>.</li>
-          <li>Open <Link className="text-emerald-300 underline" to="/calculator">My calculator</Link> and drop the file onto the install box.</li>
+          <li>Download <code>arTIfiCE_v2.1.8xp</code> from the <a className="link" href="https://yvantt.github.io/arTIfiCE/" target="_blank" rel="noreferrer">official arTIfiCE page</a>.</li>
+          <li>Open <Link className="link" to="/calculator">My calculator</Link> and drop the file onto the install box.</li>
           <li>On the calculator press <b>prgm</b>, choose <b>A</b>, pick <b>TI-BASIC</b> if asked, press <b>enter</b>. When the shell appears press <b>MODE</b> to leave it.</li>
           <li>The jailbreak lives in RAM: after a RAM reset just run it again.</li>
         </ol>
@@ -39,15 +39,15 @@ export function Unlock() {
       </Card>
       <Card className="space-y-2">
         <h2 className="font-semibold">Step 2: CE C libraries</h2>
-        <p className="text-sm text-slate-300">Almost every C game needs these shared libraries. Install them once from the library: <Link className="text-emerald-300 underline" to="/library/clibs">CE C Libraries</Link>.</p>
+        <p className="text-sm text-slate-300">Almost every C game needs these shared libraries. Install them once from the library: <Link className="link" to="/library/clibs">CE C Libraries</Link>.</p>
       </Card>
       <Card className="space-y-2">
         <h2 className="font-semibold">Step 3: a shell (optional but handy)</h2>
-        <p className="text-sm text-slate-300"><Link className="text-emerald-300 underline" to="/library/cesium">Cesium</Link> lists all programs with icons and runs assembly programs directly. Without a shell, run assembly programs with <b>Asm(</b> from the catalog: <b>Asm(prgmNAME)</b>.</p>
+        <p className="text-sm text-slate-300"><Link className="link" to="/library/cesium">Cesium</Link> lists all programs with icons and runs assembly programs directly. Without a shell, run assembly programs with <b>Asm(</b> from the catalog: <b>Asm(prgmNAME)</b>.</p>
       </Card>
       <Card className="space-y-2">
         <h2 className="font-semibold">Step 4: install games</h2>
-        <p className="text-sm text-slate-300">Open the <Link className="text-emerald-300 underline" to="/library?category=games">Games</Link> section. Programs with an open licence install with one click; for the rest, download from the author's page and drop the files onto My calculator.</p>
+        <p className="text-sm text-slate-300">Open the <Link className="link" to="/library?category=games">Games</Link> section. Programs with an open licence install with one click; for the rest, download from the author's page and drop the files onto My calculator.</p>
       </Card>
     </div>
   );

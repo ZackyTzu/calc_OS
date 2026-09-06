@@ -22,7 +22,7 @@ export function SourceView({ source }: { source: string }) {
         ))}
       </pre>
       {lines.length > 40 && (
-        <button onClick={() => setOpen(!open)} className="w-full text-xs py-2 text-emerald-300 hover:bg-slate-900 border-t border-slate-800">
+        <button type="button" onClick={() => setOpen(!open)} className="w-full text-xs py-2 text-emerald-300 hover:bg-slate-900 border-t border-slate-800 transition-colors rounded-b-lg">
           {open ? 'Show less' : `Show all ${lines.length} lines`}
         </button>
       )}
