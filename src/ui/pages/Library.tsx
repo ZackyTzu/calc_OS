@@ -10,7 +10,9 @@ export function Library() {
   const category = (params.get('category') as Category | null) ?? 'all';
   const calc = params.get('calc') ?? 'all';
   const [q, setQ] = useState('');
-  const { info, variables } = useCalculator();
+  const [onlyMine, setOnlyMine] = useState(false);
+  const { info, variables, status } = useCalculator();
+  const connected = status === 'connected' || status === 'busy';
 
   const items = useMemo(() => {
     const needle = q.trim().toLowerCase();
@@ -18,9 +20,14 @@ export function Library() {
       if (category !== 'all' && e.category !== category) return false;
       if (calc !== 'all' && e.calculator !== calc) return false;
       if (needle && !`${e.name} ${e.tagline} ${e.tags.join(' ')} ${e.author}`.toLowerCase().includes(needle)) return false;
+      if (onlyMine && connected) {
+        if (e.calculator !== 'ce') return false;
+        const level = compatibility(e, info, variables).level;
+        if (level === 'blocked') return false;
+      }
       return true;
     });
-  }, [category, calc, q]);
+  }, [category, calc, q, onlyMine, connected, info, variables]);
 
   function set(key: string, value: string) {
     const p = new URLSearchParams(params);
@@ -33,6 +40,12 @@ export function Library() {
       <div className="flex flex-wrap gap-3 items-center">
         <h1 className="text-2xl font-bold mr-auto">Library</h1>
         <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search…" className="bg-slate-900 border border-slate-700 rounded-md px-3 py-1.5 text-sm" />
+        {connected && (
+          <label className="flex items-center gap-2 text-sm text-slate-300 cursor-pointer">
+            <input type="checkbox" checked={onlyMine} onChange={(e) => setOnlyMine(e.target.checked)} />
+            Works on my {info?.model ?? 'calculator'}
+          </label>
+        )}
         <select value={calc} onChange={(e) => set('calc', e.target.value)} className="bg-slate-900 border border-slate-700 rounded-md px-3 py-1.5 text-sm">
           <option value="all">All calculators</option>
           <option value="ce">TI-84 Plus CE</option>

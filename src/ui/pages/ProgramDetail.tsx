@@ -124,7 +124,7 @@ export function ProgramDetail() {
           )}
         </div>
 
-        <div className="space-y-4">
+        <div className="space-y-4 lg:sticky lg:top-20 self-start">
           {preview && <CalcScreen preview={preview} calculator={entry.calculator} caption="First screen, simulated from the program" />}
           <Card className="space-y-3">
             <CompatBadge compat={compat} />
