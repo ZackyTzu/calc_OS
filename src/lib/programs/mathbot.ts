@@ -27,6 +27,37 @@ If length(Str3)>1:sub(Str3,2,length(Str3)-1)->Str3
 If sub(Str3,length(Str3),1)=",":sub(Str3,1,length(Str3)-1)->Str3
 expr("{"+Str3+"}")->L1`;
 
+
+/**
+ * Clean Str2 into Str3 and set V=1 when expr( can evaluate it safely, V=0 otherwise.
+ * Removes spaces, turns a minus at the start / after an operator into the negation token, and
+ * rejects unknown characters, unbalanced parentheses, doubled operators and trailing operators.
+ * TI-BASIC has no error handling, so this is what keeps a typo from ending the program.
+ */
+const VALIDATE = `""->Str3
+1->V
+0->P
+" "->Str4
+For(I,1,length(Str2))
+sub(Str2,I,1)->Str8
+If Str8!=" "
+Then
+If not(inString("0123456789.+-*/^()=~ABCDEFGHIJKLMNOPQRSTUVWXYZ",Str8)):0->V
+If Str8="-" and inString(" (+-*/^=~",Str4):"~"->Str8
+If Str8="(":P+1->P
+If Str8=")":P-1->P
+If P<0:0->V
+If inString("+*/^",Str8) and inString(" (+-*/^=~",Str4):0->V
+If Str8=")" and inString("(+-*/^=~",Str4):0->V
+If Str8="=" and inString(" (+-*/^=~",Str4):0->V
+Str3+Str8->Str3
+Str8->Str4
+End
+End
+If P!=0:0->V
+If inString("+-*/^~(=",Str4):0->V
+If length(Str3)=0:0->V`;
+
 /** Normalise Str2 into Str3 with all spaces removed (for equations and expressions). */
 const STRIP_SPACES = `""->Str3
 For(I,1,length(Str2))
@@ -73,7 +104,8 @@ If inString(Str1,"INTEG"):Goto I1
 If inString(Str1,"%") or inString(Str1,"PERCENT"):Goto PC
 If inString(Str1,"="):Goto S0
 Str1->Str2
-${STRIP_SPACES}
+${VALIDATE}
+If V=0:Goto BD
 expr(Str3)->A
 ClrHome
 Disp Str3
@@ -94,7 +126,8 @@ Disp "Type an equation in X,"
 Disp "for example 3X-7=11"
 Input "EQUATION:",Str2
 Lbl SX
-${STRIP_SPACES}
+${VALIDATE}
+If V=0:Goto BD
 inString(Str3,"=")->E
 If E=0
 Then
@@ -343,6 +376,10 @@ Input "f(X)=",Str5
 Lbl DA
 Input "AT X=",A
 Lbl D3
+Str5->Str2
+${VALIDATE}
+If V=0:Goto BD
+Str3->Str5
 String>Equ(Str5,{Y1})
 ClrHome
 Disp "f(X)="+Str5
@@ -373,6 +410,10 @@ Lbl IA
 Input "FROM X=",A
 Input "TO X=",B
 Lbl I3
+Str5->Str2
+${VALIDATE}
+If V=0:Goto BD
+Str3->Str5
 String>Equ(Str5,{Y1})
 ClrHome
 Disp "Integral of "+Str5
@@ -437,6 +478,16 @@ Input "A (%), + OR -=",A
 Disp toString(B)+" changed by "+toString(A)+"%"
 Disp "= B*(1+A/100) ="
 Disp B*(1+A/100)
+Pause 
+Goto M0
+Lbl BD
+ClrHome
+Disp "I could not read that."
+Disp "Use numbers, X, + - * / ^"
+Disp "and matching parentheses,"
+Disp "for example 3X-7=11 or"
+Disp "2(3+4)^2. Use the (-) key"
+Disp "for negative numbers."
 Pause 
 Goto M0
 Lbl GM
