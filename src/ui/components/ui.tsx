@@ -105,7 +105,7 @@ export function Progress({ value, max, className = '' }: { value: number; max: n
       aria-valuemin={0}
       aria-valuemax={100}
       aria-valuenow={Math.round(fraction * 100)}
-      className={`h-2 rounded-md bg-[rgba(129,139,152,0.12)] overflow-hidden ${className}`}
+      className={`h-2 rounded-md bg-neutral-muted overflow-hidden ${className}`}
     >
       <div className="h-full bg-green-button origin-left transition-transform duration-200 ease-linear" style={{ transform: `scaleX(${fraction})` }} />
     </div>

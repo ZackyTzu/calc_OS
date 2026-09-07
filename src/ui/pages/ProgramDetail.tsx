@@ -2,7 +2,10 @@ import { useEffect, useMemo, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { findEntry, CATEGORY_LABELS } from '../../lib/library/catalog';
 import { compatibility, formatBytes } from '../../lib/library/compat';
-import { downloadable, entriesFor, generatedSource, tnsFor } from '../../lib/library/install';
+import { downloadable, entriesFor, generatedSource, tnsFor, type ImportedFile } from '../../lib/library/install';
+import { Dropzone } from '../components/Dropzone';
+import { Octicon } from '../components/Octicon';
+import { typeName } from '../../lib/tifiles/types';
 import { useCalculator } from '../../state/calculator';
 import { useNspire } from '../../state/nspire';
 import { Badge, Button, ButtonLink, Card, CompatBadge, ErrorBox, Notice, Progress, Spinner } from '../components/ui';
@@ -20,6 +23,7 @@ export function ProgramDetail() {
   const [localError, setLocalError] = useState<string | null>(null);
   const [done, setDone] = useState(false);
   const [size, setSize] = useState<number | null>(null);
+  const [pending, setPending] = useState<ImportedFile[]>([]);
 
   const source = useMemo(() => (entry ? generatedSource(entry) : null), [entry]);
   const preview = useMemo(() => {
@@ -62,6 +66,22 @@ export function ProgramDetail() {
     try {
       const t = tnsFor(entry!);
       await nspire.upload(t.filename, t.bytes, '/calc_OS');
+      setDone(true);
+    } catch (e) {
+      setLocalError((e as Error).message);
+    }
+  }
+
+  const pendingEntries = pending.flatMap((p) => p.entries);
+  const pendingClashes = pendingEntries.filter((e) => variables?.some((v) => v.name === e.name && v.type === e.type)).map((e) => e.name);
+
+  async function doInstallPending() {
+    if (!pendingEntries.length) return;
+    setLocalError(null);
+    setDone(false);
+    try {
+      await install(pendingEntries, { replace: true });
+      setPending([]);
       setDone(true);
     } catch (e) {
       setLocalError((e as Error).message);
@@ -172,12 +192,36 @@ export function ProgramDetail() {
                 <Button variant="secondary" onClick={doDownload}>Download file</Button>
               </div>
             ) : (
-              <div className="space-y-2 text-sm">
+              <div className="space-y-3 text-sm">
                 <a className="btn btn-primary w-full" href={entry.source.url} target="_blank" rel="noreferrer">
-                  Get it from the author <ExternalIcon />
+                  <Octicon name="Download" /> Get it from the author <ExternalIcon />
                 </a>
-                <p className="text-muted">{entry.source.note}</p>
-                <Link to="/calculator" className="link">Then install the file from the My calculator page.</Link>
+                <p className="text-muted">{entry.source.note} calc_OS cannot host this file because its author has not granted redistribution rights.</p>
+                <Dropzone
+                  disabled={!connected}
+                  onFiles={(f) => { setDone(false); setPending((p) => [...p, ...f]); }}
+                  label={connected ? 'Drop the downloaded file here' : 'Connect the calculator, then drop the downloaded file here'}
+                  hint="The .zip as downloaded, or its .8xp and .8xv files. It installs straight to the archive."
+                />
+                {pending.length > 0 && (
+                  <div className="enter space-y-2">
+                    <ul className="space-y-1">
+                      {pending.map((p, i) => (
+                        <li key={i} className="flex items-start gap-2">
+                          <span className="font-mono text-xs shrink-0">{p.filename}</span>
+                          {p.error ? <span className="text-red text-xs">{p.error}</span> : <span className="text-muted text-xs">{p.entries.map((e) => `${e.name} (${typeName(e.type)})`).join(', ')}</span>}
+                          <button type="button" className="ml-auto text-muted hover:text-ink" aria-label={`Remove ${p.filename}`} onClick={() => setPending((ps) => ps.filter((_, j) => j !== i))}><Octicon name="X" /></button>
+                        </li>
+                      ))}
+                    </ul>
+                    {pendingClashes.length > 0 && <p className="text-xs text-orange">{pendingClashes.join(', ')} already {pendingClashes.length === 1 ? 'exists' : 'exist'} on the calculator and will be replaced.</p>}
+                    <Button className="w-full" onClick={doInstallPending} disabled={!connected || status === 'busy' || pendingEntries.length === 0 || compat.level === 'blocked'}>
+                      {sending ? <><Spinner /> Sending {progress!.current}</> : `Install ${pendingEntries.length} variable${pendingEntries.length === 1 ? '' : 's'}`}
+                    </Button>
+                    {sending && <Progress value={progress!.sent} max={progress!.size} />}
+                  </div>
+                )}
+                {!connected && <p className="text-xs text-muted">Or drop the file on the <Link to="/calculator" className="link">My calculator</Link> page later.</p>}
               </div>
             )}
             {done && entry.calculator === 'ce' && <Notice>Installed. On the calculator press prgm, choose {entry.installs?.[0] ?? entry.name}, then enter.</Notice>}

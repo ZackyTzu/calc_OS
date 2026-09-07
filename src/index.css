@@ -6,21 +6,28 @@
   --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
   --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
 
-  --color-ink: #1f2328;
-  --color-emphasis: #25292e;
-  --color-muted: #59636e;
-  --color-faint: #59636e;
-  --color-hairline: #d1d9e0;
-  --color-alt: #f6f8fa;
-  --color-blue: #0969da;
-  --color-blue-button: #0969da;
-  --color-blue-hover: #0860ca;
-  --color-green: #1a7f37;
-  --color-green-button: #1f883d;
-  --color-orange: #9a6700;
-  --color-red: #d1242f;
-  --color-red-hover: #a40e26;
-  --color-purple: #8250df;
+  /* Every colour points at a runtime variable so [data-theme="dark"] can swap the whole palette. */
+  --color-canvas: var(--c-canvas);
+  --color-ink: var(--c-ink);
+  --color-emphasis: var(--c-emphasis);
+  --color-muted: var(--c-muted);
+  --color-faint: var(--c-muted);
+  --color-hairline: var(--c-hairline);
+  --color-alt: var(--c-alt);
+  --color-blue: var(--c-blue);
+  --color-blue-button: var(--c-blue);
+  --color-blue-hover: var(--c-blue);
+  --color-green: var(--c-green);
+  --color-green-button: var(--c-green-button);
+  --color-orange: var(--c-orange);
+  --color-red: var(--c-red);
+  --color-red-hover: var(--c-red-hover);
+  --color-purple: var(--c-purple);
+  --color-neutral-muted: var(--c-neutral-muted);
+  --color-accent-muted: var(--c-accent-muted);
+  --color-success-muted: var(--c-success-muted);
+  --color-attention-muted: var(--c-attention-muted);
+  --color-danger-muted: var(--c-danger-muted);
 
   --text-xs: 12px;
   --text-xs--line-height: 1.6667;
@@ -39,20 +46,86 @@
   --text-4xl: 48px;
   --text-4xl--line-height: 1.25;
 
-  --shadow-card: 0 1px 1px 0 rgba(31, 35, 40, 0.04), 0 1px 2px 0 rgba(31, 35, 40, 0.03);
+  --shadow-card: var(--c-shadow);
 
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
   --default-transition-duration: 80ms;
   --default-transition-timing-function: cubic-bezier(0.33, 1, 0.68, 1);
 }
 
+/* GitHub Primer light palette (read from github.com) */
 :root {
   color-scheme: light;
+  --c-canvas: #ffffff;
+  --c-ink: #1f2328;
+  --c-emphasis: #25292e;
+  --c-muted: #59636e;
+  --c-hairline: #d1d9e0;
+  --c-alt: #f6f8fa;
+  --c-blue: #0969da;
+  --c-green: #1a7f37;
+  --c-green-button: #1f883d;
+  --c-green-button-hover: #1c8139;
+  --c-green-button-active: #197935;
+  --c-orange: #9a6700;
+  --c-red: #d1242f;
+  --c-red-hover: #a40e26;
+  --c-purple: #8250df;
+  --c-btn-bg: #f6f8fa;
+  --c-btn-hover: #eff2f5;
+  --c-btn-active: #e6eaef;
+  --c-btn-border: rgba(31, 35, 40, 0.15);
+  --c-neutral-muted: rgba(129, 139, 152, 0.12);
+  --c-accent-muted: #ddf4ff;
+  --c-success-muted: #dafbe1;
+  --c-attention-muted: #fff8c5;
+  --c-danger-muted: #ffebe9;
+  --c-success-border: #1f883d;
+  --c-attention-border: #bf8700;
+  --c-danger-border: #cf222e;
+  --c-underline: #fd8c73;
+  --c-focus: #0969da;
+  --c-shadow: 0 1px 1px 0 rgba(31, 35, 40, 0.04), 0 1px 2px 0 rgba(31, 35, 40, 0.03);
+}
+
+/* GitHub Primer dark palette (read from github.com) */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --c-canvas: #0d1117;
+  --c-ink: #f0f6fc;
+  --c-emphasis: #f0f6fc;
+  --c-muted: #9198a1;
+  --c-hairline: #3d444d;
+  --c-alt: #151b23;
+  --c-blue: #4493f8;
+  --c-green: #3fb950;
+  --c-green-button: #238636;
+  --c-green-button-hover: #29903b;
+  --c-green-button-active: #2e9a40;
+  --c-orange: #d29922;
+  --c-red: #f85149;
+  --c-red-hover: #b62324;
+  --c-purple: #ab7df8;
+  --c-btn-bg: #212830;
+  --c-btn-hover: #262c36;
+  --c-btn-active: #2a313c;
+  --c-btn-border: #3d444d;
+  --c-neutral-muted: rgba(101, 108, 118, 0.2);
+  --c-accent-muted: rgba(56, 139, 253, 0.1);
+  --c-success-muted: rgba(46, 160, 67, 0.15);
+  --c-attention-muted: rgba(187, 128, 9, 0.15);
+  --c-danger-muted: rgba(248, 81, 73, 0.1);
+  --c-success-border: #238636;
+  --c-attention-border: #9e6a03;
+  --c-danger-border: #da3633;
+  --c-underline: #f78166;
+  --c-focus: #1f6feb;
+  --c-shadow: 0 0 0 0 transparent;
 }
 
 @layer base {
   body {
-    @apply bg-white text-ink text-sm antialiased;
+    @apply bg-canvas text-ink text-sm antialiased;
   }
   a {
     color: inherit;
@@ -61,7 +134,7 @@
     text-wrap: pretty;
   }
   :focus-visible {
-    outline: 2px solid #0969da;
+    outline: 2px solid var(--c-focus);
     outline-offset: -1px;
     border-radius: 6px;
   }
@@ -69,7 +142,7 @@
 
 @layer components {
   .Box {
-    @apply rounded-md border border-hairline bg-white;
+    @apply rounded-md border border-hairline bg-canvas;
   }
   .Box-header {
     @apply bg-alt border-b border-hairline px-4 py-3 text-sm font-semibold rounded-t-md;
@@ -81,24 +154,25 @@
     border-top: 0;
   }
   .card {
-    @apply rounded-md border border-hairline bg-white p-4;
+    @apply rounded-md border border-hairline bg-canvas p-4;
   }
   .card-link {
-    @apply rounded-md border border-hairline bg-white p-4 hover:bg-alt;
+    @apply rounded-md border border-hairline bg-canvas p-4 hover:bg-alt;
     transition: background-color 80ms cubic-bezier(0.33, 1, 0.68, 1);
   }
 
   .btn {
-    @apply inline-flex items-center justify-center gap-2 h-8 px-3 rounded-md text-sm font-medium whitespace-nowrap select-none border border-hairline bg-alt text-emphasis;
+    @apply inline-flex items-center justify-center gap-2 h-8 px-3 rounded-md text-sm font-medium whitespace-nowrap select-none border border-hairline text-emphasis;
+    background-color: var(--c-btn-bg);
     box-shadow: var(--shadow-card);
     transition: 80ms cubic-bezier(0.33, 1, 0.68, 1);
     transition-property: color, background-color, border-color, box-shadow;
   }
   .btn:hover:not(:disabled) {
-    background-color: #eff2f5;
+    background-color: var(--c-btn-hover);
   }
   .btn:active:not(:disabled) {
-    background-color: #e6eaef;
+    background-color: var(--c-btn-active);
     box-shadow: none;
   }
   .btn:disabled {
@@ -110,23 +184,23 @@
     @apply h-7 px-2 text-xs;
   }
   .btn-primary {
-    background-color: #1f883d;
+    background-color: var(--c-green-button);
     color: #fff;
-    border-color: rgba(31, 35, 40, 0.15);
+    border-color: var(--c-btn-border);
   }
   .btn-primary:hover:not(:disabled) {
-    background-color: #1c8139;
+    background-color: var(--c-green-button-hover);
   }
   .btn-primary:active:not(:disabled) {
-    background-color: #197935;
+    background-color: var(--c-green-button-active);
   }
   .btn-danger {
-    color: #d1242f;
+    color: var(--c-red);
   }
   .btn-danger:hover:not(:disabled) {
-    background-color: #a40e26;
+    background-color: var(--c-red-hover);
     color: #fff;
-    border-color: rgba(31, 35, 40, 0.15);
+    border-color: var(--c-btn-border);
   }
   .btn-ghost {
     background-color: transparent;
@@ -134,7 +208,7 @@
     box-shadow: none;
   }
   .btn-ghost:hover:not(:disabled) {
-    background-color: rgba(129, 139, 152, 0.12);
+    background-color: var(--c-neutral-muted);
   }
 
   .input {
@@ -142,9 +216,9 @@
     transition: background-color 80ms cubic-bezier(0.33, 1, 0.68, 1), border-color 80ms cubic-bezier(0.33, 1, 0.68, 1);
   }
   .input:focus {
-    background-color: #fff;
-    border-color: #0969da;
-    outline: 2px solid #0969da;
+    background-color: var(--c-canvas);
+    border-color: var(--c-focus);
+    outline: 2px solid var(--c-focus);
     outline-offset: -1px;
   }
 
@@ -155,23 +229,23 @@
   .Label {
     @apply inline-flex items-center h-5 px-[7px] rounded-full border border-hairline text-xs font-medium leading-[18px] whitespace-nowrap text-muted;
   }
-  .Label--success { color: #1a7f37; border-color: #1f883d; }
-  .Label--attention { color: #9a6700; border-color: #bf8700; }
-  .Label--danger { color: #d1242f; border-color: #cf222e; }
-  .Label--accent { color: #0969da; border-color: #0969da; }
+  .Label--success { color: var(--c-green); border-color: var(--c-success-border); }
+  .Label--attention { color: var(--c-orange); border-color: var(--c-attention-border); }
+  .Label--danger { color: var(--c-red); border-color: var(--c-danger-border); }
+  .Label--accent { color: var(--c-blue); border-color: var(--c-blue); }
 
   .Counter {
     @apply inline-flex items-center justify-center min-w-5 h-5 px-1.5 rounded-full text-xs font-medium text-ink;
-    background-color: rgba(129, 139, 152, 0.12);
+    background-color: var(--c-neutral-muted);
   }
   .topic-tag {
     @apply inline-flex items-center h-6 px-2.5 rounded-full text-xs font-medium;
-    background-color: #ddf4ff;
-    color: #0969da;
+    background-color: var(--c-accent-muted);
+    color: var(--c-blue);
     transition: background-color 80ms cubic-bezier(0.33, 1, 0.68, 1), color 80ms cubic-bezier(0.33, 1, 0.68, 1);
   }
   .topic-tag:hover {
-    background-color: #0969da;
+    background-color: var(--c-blue);
     color: #fff;
   }
 
@@ -186,7 +260,7 @@
     transition: background-color 80ms cubic-bezier(0.33, 1, 0.68, 1);
   }
   .UnderlineNav-item:hover > span {
-    background-color: rgba(129, 139, 152, 0.12);
+    background-color: var(--c-neutral-muted);
   }
   .UnderlineNav-item[aria-current="page"] {
     @apply font-semibold;
@@ -199,15 +273,31 @@
     bottom: -1px;
     height: 2px;
     border-radius: 6px;
-    background-color: #fd8c73;
+    background-color: var(--c-underline);
+  }
+
+  .SegmentedControl {
+    @apply inline-flex items-center rounded-md border border-hairline overflow-hidden;
+    background-color: var(--c-btn-bg);
+  }
+  .SegmentedControl > button {
+    @apply h-7 px-2 inline-flex items-center gap-1.5 text-xs text-muted whitespace-nowrap;
+    transition: background-color 80ms cubic-bezier(0.33, 1, 0.68, 1), color 80ms cubic-bezier(0.33, 1, 0.68, 1);
+  }
+  .SegmentedControl > button:hover {
+    @apply text-ink;
+  }
+  .SegmentedControl > button[aria-pressed="true"] {
+    @apply text-ink font-semibold bg-canvas;
+    box-shadow: inset 0 0 0 1px var(--c-hairline);
   }
 
   .flash {
     @apply rounded-md border px-4 py-3 text-sm text-ink;
   }
-  .flash-error { background-color: #ffebe9; border-color: rgba(255, 129, 130, 0.4); }
-  .flash-success { background-color: #dafbe1; border-color: rgba(74, 194, 107, 0.4); }
-  .flash-warn { background-color: #fff8c5; border-color: rgba(212, 167, 44, 0.4); }
+  .flash-error { background-color: var(--c-danger-muted); border-color: var(--c-danger-border); }
+  .flash-success { background-color: var(--c-success-muted); border-color: var(--c-success-border); }
+  .flash-warn { background-color: var(--c-attention-muted); border-color: var(--c-attention-border); }
 
   /* README-style body copy, as on a repository page. */
   .markdown-body {
@@ -239,7 +329,7 @@
   }
   .markdown-body code {
     @apply font-mono text-[85%] px-[0.4em] py-[0.2em] rounded-md;
-    background-color: rgba(129, 139, 152, 0.12);
+    background-color: var(--c-neutral-muted);
   }
   .markdown-body table {
     @apply border-collapse text-sm w-auto;
@@ -251,7 +341,7 @@
     @apply font-semibold;
   }
   .markdown-body tr:nth-child(2n) {
-    background-color: #f6f8fa;
+    background-color: var(--c-alt);
   }
 
   /* Elements that appear in response to a state change (errors, confirmations, results). */

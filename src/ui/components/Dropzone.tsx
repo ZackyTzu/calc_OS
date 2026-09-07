@@ -40,7 +40,7 @@ export function Dropzone({ onFiles, onRawFiles, disabled, accept = ACCEPT, multi
       onClick={openPicker}
       onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openPicker(); } }}
       className={`rounded-md border-2 border-dashed p-8 text-center transition-[border-color,background-color] ${
-        over ? 'border-blue bg-[#ddf4ff]' : 'border-hairline bg-alt hover:border-[#818b98]'
+        over ? 'border-blue bg-accent-muted' : 'border-hairline bg-alt hover:border-muted'
       } ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
     >
       <input ref={inputRef} type="file" multiple={multiple} accept={accept} className="hidden" tabIndex={-1} onChange={(e) => { handle(e.target.files); e.target.value = ''; }} />

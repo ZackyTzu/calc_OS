@@ -1,6 +1,7 @@
 import { useEffect, useState, type FormEvent, type ReactNode } from 'react';
 import { NavLink, Link, useLocation, useNavigate } from 'react-router-dom';
 import { ConnectButton } from './ConnectButton';
+import { ThemeSwitch } from './ThemeSwitch';
 import { Octicon, type OcticonName } from './Octicon';
 import { catalog } from '../../lib/library/catalog';
 
@@ -58,7 +59,8 @@ export function Layout({ children }: { children: ReactNode }) {
               <input className="input pl-8 w-56 lg:w-72" value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search programs" aria-label="Search programs" />
             </div>
           </form>
-          <div className="ml-auto sm:ml-0">
+          <div className="ml-auto sm:ml-0 flex items-center gap-2">
+            <span className="hidden md:inline-flex"><ThemeSwitch /></span>
             <ConnectButton />
           </div>
         </div>
@@ -76,7 +78,7 @@ export function Layout({ children }: { children: ReactNode }) {
           </nav>
         </div>
         {open && (
-          <nav id="mobile-menu" className="enter md:hidden border-t border-hairline bg-white px-4 py-2" aria-label="Main">
+          <nav id="mobile-menu" className="enter md:hidden border-t border-hairline bg-canvas px-4 py-2" aria-label="Main">
             {tabs.map((t) => (
               <NavLink key={t.to} to={t.to} end={t.end} className="flex items-center gap-3 py-2.5 text-sm border-b border-hairline last:border-0 aria-[current=page]:font-semibold">
                 <Octicon name={t.icon} className="text-muted" />
@@ -84,6 +86,10 @@ export function Layout({ children }: { children: ReactNode }) {
                 {t.count !== undefined && <span className="Counter">{t.count}</span>}
               </NavLink>
             ))}
+            <div className="py-3 flex items-center justify-between gap-3 border-b border-hairline">
+              <span className="text-muted">Appearance</span>
+              <ThemeSwitch showLabels />
+            </div>
             <form className="py-3" role="search" onSubmit={search}>
               <input className="input w-full" value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search programs" aria-label="Search programs" />
             </form>
