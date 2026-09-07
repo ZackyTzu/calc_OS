@@ -88,7 +88,7 @@ export function ProgramDetail() {
     <div className="space-y-6">
       <Link to="/library" className="text-sm text-muted hover:text-ink transition-colors">Back to the library</Link>
       <div className="grid lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2 space-y-5">
+        <div className="lg:col-span-2 space-y-5 min-w-0">
           <div>
             <div className="flex flex-wrap items-center gap-2 mb-2">
               <h1 className="text-xl font-semibold mr-2">{entry.name}</h1>
@@ -124,7 +124,7 @@ export function ProgramDetail() {
           )}
         </div>
 
-        <div className="space-y-4 lg:sticky lg:top-20 self-start">
+        <div className="space-y-4 lg:sticky lg:top-6 self-start min-w-0">
           {preview && <CalcScreen preview={preview} calculator={entry.calculator} caption="First screen, simulated from the program" />}
           <Card className="space-y-3">
             <CompatBadge compat={compat} />
