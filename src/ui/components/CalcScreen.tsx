@@ -8,10 +8,10 @@ export function CalcScreen({ preview, calculator, caption, className = '' }: { p
     : preview.rows;
   return (
     <figure className={`select-none ${className}`}>
-      <div className={`rounded-[18px] p-4 ${calculator === 'ce' ? 'bg-[#1d1d1f]' : 'bg-[#2c2c2e]'}`}>
-        <div className="flex items-center justify-between px-1 pb-2 text-[10px] uppercase tracking-widest text-[#86868b]">
+      <div className={`rounded-[12px] p-4 ${calculator === 'ce' ? 'bg-[#25292e]' : 'bg-[#3d444d]'}`}>
+        <div className="flex items-center justify-between px-1 pb-2 text-[10px] uppercase tracking-widest text-[#9198a1]">
           <span>{calculator === 'ce' ? 'TI-84 Plus CE' : 'TI-Nspire CX II Python shell'}</span>
-          <span className="w-1.5 h-1.5 rounded-full bg-[#34c759]" />
+          <span className="w-1.5 h-1.5 rounded-full bg-[#3fb950]" />
         </div>
         <pre
           className={`rounded-lg font-mono leading-[1.35] px-2 py-1.5 overflow-hidden ${
@@ -26,7 +26,7 @@ export function CalcScreen({ preview, calculator, caption, className = '' }: { p
           ))}
         </pre>
       </div>
-      {caption && <figcaption className="text-xs text-muted mt-3 text-center">{caption}</figcaption>}
+      {caption && <figcaption className="text-xs text-muted mt-2 text-center">{caption}</figcaption>}
     </figure>
   );
 }

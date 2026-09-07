@@ -4,8 +4,8 @@ export function Privacy() {
   return (
     <article className="max-w-3xl space-y-6 text-ink">
       <header className="space-y-1">
-        <h1 className="text-4xl font-semibold text-ink">Privacy policy</h1>
-        <p className="text-sm text-faint">Last updated 6 September 2026</p>
+        <h1 className="text-xl font-semibold text-ink">Privacy policy</h1>
+        <p className="text-sm text-muted">Last updated 6 September 2026</p>
       </header>
 
       <p>calc_OS has no user accounts, no analytics, no advertising, no cookies and no server of its own. Everything the site does happens inside your browser.</p>

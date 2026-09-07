@@ -3,7 +3,7 @@ import { Card } from '../components/ui';
 export function About() {
   return (
     <div className="space-y-6 max-w-3xl">
-      <h1 className="text-4xl font-semibold">About calc_OS</h1>
+      <h1 className="text-xl font-semibold">About calc_OS</h1>
       <Card className="space-y-2 text-ink">
         <p>calc_OS is a free, open-source web app that installs programs on Texas Instruments graphing calculators straight from the browser using WebUSB. It generates its own study programs (AP Physics 1, AP Precalculus, AP Statistics, a math assistant) and hosts open-licensed community programs. Everything runs in your browser; nothing about your calculator is sent to any server.</p>
         <p>Source code: <a className="link" href="https://github.com/ZackyTzu/calc_OS" target="_blank" rel="noreferrer">github.com/ZackyTzu/calc_OS</a> (GPL-3.0-or-later).</p>

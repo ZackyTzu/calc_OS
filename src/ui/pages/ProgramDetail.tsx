@@ -91,7 +91,7 @@ export function ProgramDetail() {
         <div className="lg:col-span-2 space-y-5">
           <div>
             <div className="flex flex-wrap items-center gap-2 mb-2">
-              <h1 className="text-4xl font-semibold mr-2">{entry.name}</h1>
+              <h1 className="text-xl font-semibold mr-2">{entry.name}</h1>
               <Badge>{entry.calculator === 'ce' ? 'TI-84 Plus CE' : 'TI-Nspire CX II'}</Badge>
               <Badge>{CATEGORY_LABELS[entry.category]}</Badge>
               {entry.version && <Badge>{entry.version}</Badge>}

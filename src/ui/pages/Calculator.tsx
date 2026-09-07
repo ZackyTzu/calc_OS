@@ -55,7 +55,7 @@ export function Calculator() {
   return (
     <div className="space-y-8">
       <div className="flex items-center justify-between flex-wrap gap-3">
-        <h1 className="text-4xl font-semibold">My calculator</h1>
+        <h1 className="text-xl font-semibold">My calculator</h1>
         {connected && <Button variant="secondary" onClick={refresh} disabled={status === 'busy'}>Refresh</Button>}
       </div>
       {error && <ErrorBox message={error} onClose={clearError} />}
@@ -86,8 +86,8 @@ export function Calculator() {
 
       {connected && info && (
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <Card><div className="text-xs text-muted">Model</div><div className="font-semibold">{info.model}</div><div className="text-xs text-faint">HW {info.hwVersion}{info.pythonOnBoard ? ', Python' : ''}</div></Card>
-          <Card><div className="text-xs text-muted">Operating system</div><div className="font-semibold tabular-nums">{info.osVersion}</div><div className="text-xs text-faint tabular-nums">boot {info.bootVersion}</div></Card>
+          <Card><div className="text-xs text-muted">Model</div><div className="font-semibold">{info.model}</div><div className="text-xs text-muted">HW {info.hwVersion}{info.pythonOnBoard ? ', Python' : ''}</div></Card>
+          <Card><div className="text-xs text-muted">Operating system</div><div className="font-semibold tabular-nums">{info.osVersion}</div><div className="text-xs text-muted tabular-nums">boot {info.bootVersion}</div></Card>
           <Card>
             <div className="text-xs text-muted">RAM free</div>
             <div className="font-semibold tabular-nums">{info.ramFree ? formatBytes(info.ramFree) : 'n/a on home screen'}</div>
@@ -118,7 +118,7 @@ export function Calculator() {
                   <span className="font-mono">{p.filename}</span>
                   {p.error && <span className="text-red">{p.error}</span>}
                   {!p.error && <span className="text-muted">contains {p.entries.map((e) => `${e.name} (${typeName(e.type)}, ${formatBytes(e.data.length)}${e.archived ? ', archive' : ''})`).join(', ')}</span>}
-                  <button type="button" className="ml-auto text-faint hover:text-ink transition-colors" aria-label={`Remove ${p.filename}`} onClick={() => setPending((ps) => ps.filter((_, j) => j !== i))}><CloseIcon /></button>
+                  <button type="button" className="ml-auto text-muted hover:text-ink transition-colors" aria-label={`Remove ${p.filename}`} onClick={() => setPending((ps) => ps.filter((_, j) => j !== i))}><CloseIcon /></button>
                 </li>
               ))}
             </ul>
@@ -155,7 +155,7 @@ export function Calculator() {
       >
         {!connected && <p className="text-muted text-sm">Connect to see the programs and variables on the calculator.</p>}
         {connected && variables && (
-          <div className="rounded-xl border border-hairline overflow-hidden">
+          <div className="rounded-md border border-hairline overflow-hidden">
             <table className="w-full text-sm">
               <thead className="bg-alt text-muted text-left">
                 <tr><th className="px-3 py-2 font-medium">Name</th><th className="px-3 py-2 font-medium">Type</th><th className="px-3 py-2 text-right font-medium">Size</th><th className="px-3 py-2 font-medium">Where</th><th className="px-3 py-2"></th></tr>
@@ -173,14 +173,14 @@ export function Calculator() {
                     </td>
                   </tr>
                 ))}
-                {sorted.length === 0 && <tr><td colSpan={5} className="px-3 py-6 text-center text-faint">Nothing here.</td></tr>}
+                {sorted.length === 0 && <tr><td colSpan={5} className="px-3 py-6 text-center text-muted">Nothing here.</td></tr>}
               </tbody>
             </table>
           </div>
         )}
       </Section>
 
-      <details className="text-xs text-faint" open={showLog} onToggle={(e) => setShowLog((e.target as HTMLDetailsElement).open)}>
+      <details className="text-xs text-muted" open={showLog} onToggle={(e) => setShowLog((e.target as HTMLDetailsElement).open)}>
         <summary className="cursor-pointer rounded-md">Connection log ({log.length})</summary>
         <pre className="mt-2 max-h-64 overflow-auto bg-alt border border-hairline rounded p-2 font-mono">
           {log.map((l) => `${new Date(l.t).toLocaleTimeString()} ${l.dir === 'tx' ? 'TX' : l.dir === 'rx' ? 'RX' : '--'} ${l.text}`).join('\n')}

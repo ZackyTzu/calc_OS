@@ -1,66 +1,49 @@
 @import "tailwindcss";
 
-/* Apple-style tokens: system SF stack, #1d1d1f ink on white, #f5f5f7 secondary surfaces, #0066cc links,
-   #0071e3 buttons, and Apple's size-specific tracking (tight on display sizes, slightly loose on captions). */
+/* GitHub (Primer) tokens, read from github.com's light theme: #1f2328 text, #59636e muted, #f6f8fa
+   secondary surfaces, #d1d9e0 borders, #0969da links, #1f883d primary buttons, 6px radii, 14px body. */
 @theme {
-  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
 
-  --color-ink: #1d1d1f;
-  --color-muted: #6e6e73;
-  --color-faint: #86868b;
-  --color-hairline: #d2d2d7;
-  --color-alt: #f5f5f7;
-  --color-blue: #0066cc;
-  --color-blue-button: #0071e3;
-  --color-blue-hover: #0077ed;
-  --color-blue-dark: #2997ff;
-  --color-green: #248a3d;
-  --color-orange: #b25000;
-  --color-red: #d70015;
-  --color-red-hover: #ff3b30;
+  --color-ink: #1f2328;
+  --color-emphasis: #25292e;
+  --color-muted: #59636e;
+  --color-faint: #59636e;
+  --color-hairline: #d1d9e0;
+  --color-alt: #f6f8fa;
+  --color-blue: #0969da;
+  --color-blue-button: #0969da;
+  --color-blue-hover: #0860ca;
+  --color-green: #1a7f37;
+  --color-green-button: #1f883d;
+  --color-orange: #9a6700;
+  --color-red: #d1242f;
+  --color-red-hover: #a40e26;
+  --color-purple: #8250df;
 
   --text-xs: 12px;
-  --text-xs--line-height: 1.3334;
-  --text-xs--letter-spacing: -0.01em;
+  --text-xs--line-height: 1.6667;
   --text-sm: 14px;
-  --text-sm--line-height: 1.4286;
-  --text-sm--letter-spacing: -0.016em;
-  --text-base: 17px;
-  --text-base--line-height: 1.4706;
-  --text-base--letter-spacing: -0.022em;
-  --text-lg: 21px;
-  --text-lg--line-height: 1.381;
-  --text-lg--letter-spacing: 0.011em;
+  --text-sm--line-height: 1.5;
+  --text-base: 16px;
+  --text-base--line-height: 1.5;
+  --text-lg: 20px;
+  --text-lg--line-height: 1.25;
   --text-xl: 24px;
-  --text-xl--line-height: 1.1667;
-  --text-xl--letter-spacing: 0.009em;
-  --text-2xl: 28px;
-  --text-2xl--line-height: 1.1429;
-  --text-2xl--letter-spacing: 0.007em;
-  --text-3xl: 32px;
-  --text-3xl--line-height: 1.125;
-  --text-3xl--letter-spacing: 0.004em;
-  --text-4xl: 40px;
-  --text-4xl--line-height: 1.1;
-  --text-4xl--letter-spacing: 0em;
-  --text-5xl: 48px;
-  --text-5xl--line-height: 1.0834;
-  --text-5xl--letter-spacing: -0.003em;
-  --text-6xl: 56px;
-  --text-6xl--line-height: 1.0714;
-  --text-6xl--letter-spacing: -0.005em;
-  --text-7xl: 80px;
-  --text-7xl--line-height: 1.05;
-  --text-7xl--letter-spacing: -0.015em;
+  --text-xl--line-height: 1.25;
+  --text-2xl: 32px;
+  --text-2xl--line-height: 1.25;
+  --text-3xl: 40px;
+  --text-3xl--line-height: 1.25;
+  --text-4xl: 48px;
+  --text-4xl--line-height: 1.25;
 
-  --shadow-card: 2px 4px 12px rgba(0, 0, 0, 0.08);
-  --shadow-card-hover: 2px 4px 16px rgba(0, 0, 0, 0.16);
+  --shadow-card: 0 1px 1px 0 rgba(31, 35, 40, 0.04), 0 1px 2px 0 rgba(31, 35, 40, 0.03);
 
-  /* Strong ease-out for entering, exiting and press feedback. */
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
-  --default-transition-duration: 150ms;
-  --default-transition-timing-function: ease;
+  --default-transition-duration: 80ms;
+  --default-transition-timing-function: cubic-bezier(0.33, 1, 0.68, 1);
 }
 
 :root {
@@ -69,115 +52,206 @@
 
 @layer base {
   body {
-    @apply bg-white text-ink text-base antialiased;
+    @apply bg-white text-ink text-sm antialiased;
   }
   a {
     color: inherit;
-  }
-  h1, h2, h3 {
-    text-wrap: balance;
   }
   p, li {
     text-wrap: pretty;
   }
   :focus-visible {
-    outline: 3px solid rgba(0, 125, 250, 0.6);
-    outline-offset: 2px;
+    outline: 2px solid #0969da;
+    outline-offset: -1px;
+    border-radius: 6px;
   }
 }
 
 @layer components {
-  /* The floating chrome: content scrolls under a translucent layer. */
-  .globalnav {
-    background: rgba(255, 255, 255, 0.8);
-    -webkit-backdrop-filter: saturate(180%) blur(20px);
-    backdrop-filter: saturate(180%) blur(20px);
+  .Box {
+    @apply rounded-md border border-hairline bg-white;
   }
-  .nav-link {
-    @apply text-xs text-black/80 hover:text-black;
-    transition: color 150ms ease;
+  .Box-header {
+    @apply bg-alt border-b border-hairline px-4 py-3 text-sm font-semibold rounded-t-md;
   }
-  .nav-link[aria-current="page"] {
-    @apply text-black font-semibold;
+  .Box-row {
+    @apply border-t border-hairline px-4 py-3;
+  }
+  .Box-row:first-child {
+    border-top: 0;
+  }
+  .card {
+    @apply rounded-md border border-hairline bg-white p-4;
+  }
+  .card-link {
+    @apply rounded-md border border-hairline bg-white p-4 hover:bg-alt;
+    transition: background-color 80ms cubic-bezier(0.33, 1, 0.68, 1);
   }
 
   .btn {
-    @apply inline-flex items-center justify-center gap-2 h-[42px] px-[21px] rounded-xl text-base whitespace-nowrap select-none;
-    transition:
-      background-color 150ms ease,
-      color 150ms ease,
-      border-color 150ms ease,
-      transform 160ms var(--ease-out);
+    @apply inline-flex items-center justify-center gap-2 h-8 px-3 rounded-md text-sm font-medium whitespace-nowrap select-none border border-hairline bg-alt text-emphasis;
+    box-shadow: var(--shadow-card);
+    transition: 80ms cubic-bezier(0.33, 1, 0.68, 1);
+    transition-property: color, background-color, border-color, box-shadow;
   }
-  .btn:disabled {
-    @apply opacity-40 cursor-not-allowed;
+  .btn:hover:not(:disabled) {
+    background-color: #eff2f5;
   }
   .btn:active:not(:disabled) {
-    transform: scale(0.97);
+    background-color: #e6eaef;
+    box-shadow: none;
+  }
+  .btn:disabled {
+    @apply text-muted cursor-not-allowed;
+    box-shadow: none;
+    opacity: 0.7;
   }
   .btn-sm {
-    @apply h-8 px-4 text-sm rounded-lg;
+    @apply h-7 px-2 text-xs;
   }
   .btn-primary {
-    @apply bg-blue-button text-white hover:bg-blue-hover;
+    background-color: #1f883d;
+    color: #fff;
+    border-color: rgba(31, 35, 40, 0.15);
   }
-  .btn-secondary {
-    @apply bg-alt text-ink hover:bg-[#e8e8ed];
+  .btn-primary:hover:not(:disabled) {
+    background-color: #1c8139;
+  }
+  .btn-primary:active:not(:disabled) {
+    background-color: #197935;
   }
   .btn-danger {
-    @apply bg-red text-white hover:bg-red-hover;
+    color: #d1242f;
+  }
+  .btn-danger:hover:not(:disabled) {
+    background-color: #a40e26;
+    color: #fff;
+    border-color: rgba(31, 35, 40, 0.15);
   }
   .btn-ghost {
-    @apply text-blue hover:bg-alt;
+    background-color: transparent;
+    border-color: transparent;
+    box-shadow: none;
   }
-  .btn-outline {
-    @apply border border-hairline text-ink hover:bg-alt;
+  .btn-ghost:hover:not(:disabled) {
+    background-color: rgba(129, 139, 152, 0.12);
   }
 
   .input {
-    @apply h-10 rounded-xl bg-white border border-hairline px-3 text-sm text-ink placeholder:text-faint;
-    transition:
-      border-color 150ms ease,
-      box-shadow 150ms ease;
-  }
-  .input:hover {
-    border-color: var(--color-faint);
+    @apply h-8 rounded-md border border-hairline bg-alt px-3 text-sm text-ink placeholder:text-muted;
+    transition: background-color 80ms cubic-bezier(0.33, 1, 0.68, 1), border-color 80ms cubic-bezier(0.33, 1, 0.68, 1);
   }
   .input:focus {
-    outline: none;
-    border-color: var(--color-blue-button);
-    box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.35);
+    background-color: #fff;
+    border-color: #0969da;
+    outline: 2px solid #0969da;
+    outline-offset: -1px;
   }
 
   .link {
-    @apply text-blue hover:underline underline-offset-2;
+    @apply text-blue hover:underline;
   }
 
-  .card {
-    @apply rounded-[18px] bg-white p-6 shadow-card;
+  .Label {
+    @apply inline-flex items-center h-5 px-[7px] rounded-full border border-hairline text-xs font-medium leading-[18px] whitespace-nowrap text-muted;
   }
-  .card-link {
-    @apply rounded-[18px] bg-white p-6 shadow-card;
-    transition:
-      box-shadow 150ms ease,
-      transform 160ms var(--ease-out);
+  .Label--success { color: #1a7f37; border-color: #1f883d; }
+  .Label--attention { color: #9a6700; border-color: #bf8700; }
+  .Label--danger { color: #d1242f; border-color: #cf222e; }
+  .Label--accent { color: #0969da; border-color: #0969da; }
+
+  .Counter {
+    @apply inline-flex items-center justify-center min-w-5 h-5 px-1.5 rounded-full text-xs font-medium text-ink;
+    background-color: rgba(129, 139, 152, 0.12);
   }
-  .card-link:hover {
-    box-shadow: var(--shadow-card-hover);
+  .topic-tag {
+    @apply inline-flex items-center h-6 px-2.5 rounded-full text-xs font-medium;
+    background-color: #ddf4ff;
+    color: #0969da;
+    transition: background-color 80ms cubic-bezier(0.33, 1, 0.68, 1), color 80ms cubic-bezier(0.33, 1, 0.68, 1);
   }
-  .card-link:active {
-    transform: scale(0.99);
+  .topic-tag:hover {
+    background-color: #0969da;
+    color: #fff;
   }
 
-  /* Home page product tiles, light and dark. */
-  .tile {
-    @apply rounded-[18px] px-6 pt-12 pb-10 text-center flex flex-col items-center;
+  .UnderlineNav {
+    @apply flex gap-1 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden;
   }
-  .tile-light {
-    @apply bg-alt text-ink;
+  .UnderlineNav-item {
+    @apply relative flex items-center pt-1 pb-2 text-sm text-ink whitespace-nowrap;
   }
-  .tile-dark {
-    @apply bg-black text-white;
+  .UnderlineNav-item > span {
+    @apply flex items-center gap-2 rounded-md px-2 py-1;
+    transition: background-color 80ms cubic-bezier(0.33, 1, 0.68, 1);
+  }
+  .UnderlineNav-item:hover > span {
+    background-color: rgba(129, 139, 152, 0.12);
+  }
+  .UnderlineNav-item[aria-current="page"] {
+    @apply font-semibold;
+  }
+  .UnderlineNav-item[aria-current="page"]::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -1px;
+    height: 2px;
+    border-radius: 6px;
+    background-color: #fd8c73;
+  }
+
+  .flash {
+    @apply rounded-md border px-4 py-3 text-sm text-ink;
+  }
+  .flash-error { background-color: #ffebe9; border-color: rgba(255, 129, 130, 0.4); }
+  .flash-success { background-color: #dafbe1; border-color: rgba(74, 194, 107, 0.4); }
+  .flash-warn { background-color: #fff8c5; border-color: rgba(212, 167, 44, 0.4); }
+
+  /* README-style body copy, as on a repository page. */
+  .markdown-body {
+    @apply text-base;
+  }
+  .markdown-body h1 {
+    @apply text-2xl font-semibold pb-2 mb-4 border-b border-hairline;
+  }
+  .markdown-body h2 {
+    @apply text-xl font-semibold pb-1.5 mb-4 mt-6 border-b border-hairline;
+  }
+  .markdown-body h3 {
+    @apply text-lg font-semibold mb-4 mt-6;
+  }
+  .markdown-body p, .markdown-body ul, .markdown-body ol, .markdown-body table, .markdown-body figure {
+    @apply mb-4;
+  }
+  .markdown-body ul {
+    @apply list-disc pl-8;
+  }
+  .markdown-body ol {
+    @apply list-decimal pl-8;
+  }
+  .markdown-body li + li {
+    @apply mt-1;
+  }
+  .markdown-body a {
+    @apply text-blue hover:underline;
+  }
+  .markdown-body code {
+    @apply font-mono text-[85%] px-[0.4em] py-[0.2em] rounded-md;
+    background-color: rgba(129, 139, 152, 0.12);
+  }
+  .markdown-body table {
+    @apply border-collapse text-sm w-auto;
+  }
+  .markdown-body th, .markdown-body td {
+    @apply border border-hairline px-[13px] py-1.5;
+  }
+  .markdown-body th {
+    @apply font-semibold;
+  }
+  .markdown-body tr:nth-child(2n) {
+    background-color: #f6f8fa;
   }
 
   /* Elements that appear in response to a state change (errors, confirmations, results). */
@@ -190,28 +264,15 @@
       translate: 0 4px;
     }
   }
-
   .row-hover {
-    transition: background-color 150ms ease;
+    transition: background-color 80ms cubic-bezier(0.33, 1, 0.68, 1);
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .btn:active:not(:disabled),
-  .card-link:active {
-    transform: none;
-  }
   .enter {
     @starting-style {
       translate: 0 0;
     }
-  }
-}
-
-@media (prefers-reduced-transparency: reduce) {
-  .globalnav {
-    background: #fff;
-    -webkit-backdrop-filter: none;
-    backdrop-filter: none;
   }
 }

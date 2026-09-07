@@ -35,7 +35,7 @@ export function Nspire() {
   return (
     <div className="space-y-8">
       <div className="flex items-center justify-between flex-wrap gap-3">
-        <h1 className="text-4xl font-semibold">TI-Nspire CX II</h1>
+        <h1 className="text-xl font-semibold">TI-Nspire CX II</h1>
         <Badge tone="amber">experimental: not yet tested on hardware</Badge>
       </div>
       {n.error && <ErrorBox message={n.error} onClose={n.clearError} />}
@@ -48,7 +48,7 @@ export function Nspire() {
         <Card className="space-y-3">
           <p className="text-ink">The Nspire transfer engine (web-libnspire, the same code behind n-link) runs in a background thread and needs a browser feature called cross-origin isolation. Enabling it installs a small service worker for this site and reloads the page. Nothing else changes.</p>
           <Button onClick={n.enableIsolation}>Enable Nspire transfers (reloads the page)</Button>
-          <p className="text-xs text-faint">{n.reason}</p>
+          <p className="text-xs text-muted">{n.reason}</p>
         </Card>
       )}
 
@@ -66,9 +66,9 @@ export function Nspire() {
 
       {connected && n.info && (
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <Card><div className="text-xs text-muted">Model</div><div className="font-semibold">{n.info.name}</div><div className="text-xs text-faint">{typeof n.info.hw_type === 'string' ? n.info.hw_type : 'unknown hardware'}</div></Card>
-          <Card><div className="text-xs text-muted">Operating system</div><div className="font-semibold tabular-nums">{version}</div><div className="text-xs text-faint">{pythonAvailable ? 'Python available' : 'Python needs OS 5.2+'}</div></Card>
-          <Card><div className="text-xs text-muted">Storage free</div><div className="font-semibold tabular-nums">{formatBytes(n.info.free_storage)}</div><div className="text-xs text-faint tabular-nums">of {formatBytes(n.info.total_storage)}</div></Card>
+          <Card><div className="text-xs text-muted">Model</div><div className="font-semibold">{n.info.name}</div><div className="text-xs text-muted">{typeof n.info.hw_type === 'string' ? n.info.hw_type : 'unknown hardware'}</div></Card>
+          <Card><div className="text-xs text-muted">Operating system</div><div className="font-semibold tabular-nums">{version}</div><div className="text-xs text-muted">{pythonAvailable ? 'Python available' : 'Python needs OS 5.2+'}</div></Card>
+          <Card><div className="text-xs text-muted">Storage free</div><div className="font-semibold tabular-nums">{formatBytes(n.info.free_storage)}</div><div className="text-xs text-muted tabular-nums">of {formatBytes(n.info.total_storage)}</div></Card>
           <Card>
             <div className="text-xs text-muted">Battery</div>
             <div className="font-semibold">{typeof n.info.battery === 'string' ? n.info.battery : 'unknown'}{n.info.is_charging ? ', charging' : ''}</div>
@@ -104,7 +104,7 @@ export function Nspire() {
               <Button type="button" variant="ghost" size="sm" onClick={() => setNewFolder(null)}>Cancel</Button>
             </form>
           )}
-          <div className="rounded-xl border border-hairline overflow-hidden">
+          <div className="rounded-md border border-hairline overflow-hidden">
             <table className="w-full text-sm">
               <thead className="bg-alt text-muted text-left"><tr><th className="px-3 py-2 font-medium">Name</th><th className="px-3 py-2 text-right font-medium">Size</th><th className="px-3 py-2"></th></tr></thead>
               <tbody>
@@ -123,7 +123,7 @@ export function Nspire() {
                     </td>
                   </tr>
                 ))}
-                {n.files && n.files.length === 0 && <tr><td colSpan={3} className="px-3 py-6 text-center text-faint">Empty folder.</td></tr>}
+                {n.files && n.files.length === 0 && <tr><td colSpan={3} className="px-3 py-6 text-center text-muted">Empty folder.</td></tr>}
               </tbody>
             </table>
           </div>
@@ -134,7 +134,7 @@ export function Nspire() {
               accept=".tns"
               aria-label="Choose a .tns document"
               onChange={(e) => { pickFile(e.target.files); e.target.value = ''; }}
-              className="block text-sm text-ink file:mr-3 file:h-8 file:px-3 file:rounded-md file:border-0 file:bg-alt file:text-ink file:text-sm file:font-medium hover:file:bg-[#e8e8ed] file:transition-colors"
+              className="block text-sm text-ink file:mr-3 file:h-7 file:px-3 file:rounded-md file:border file:border-hairline file:bg-alt file:text-ink file:text-xs file:font-medium hover:file:bg-[#eff2f5] file:transition-colors"
             />
             {fileError && <ErrorBox message={fileError} onClose={() => setFileError(null)} />}
             {pendingName && pendingBytes && (
@@ -177,7 +177,7 @@ export function Nspire() {
         <p>This part has been tested against reference files but not yet on a real calculator. If something fails, please <a className="link" href="https://github.com/ZackyTzu/calc_OS/issues" target="_blank" rel="noreferrer">report it</a> with the connection log.</p>
       </Card>
 
-      <details className="text-xs text-faint">
+      <details className="text-xs text-muted">
         <summary className="cursor-pointer rounded-md">Connection log ({n.log.length})</summary>
         <pre className="mt-2 max-h-64 overflow-auto bg-alt border border-hairline rounded p-2 font-mono">{n.log.join('\n')}</pre>
       </details>

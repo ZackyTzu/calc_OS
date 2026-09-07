@@ -129,7 +129,7 @@ export function GameBoy() {
   return (
     <div className="space-y-8 max-w-4xl">
       <div className="space-y-2">
-        <h1 className="text-4xl font-semibold">Game Boy games on the TI-84 Plus CE</h1>
+        <h1 className="text-xl font-semibold">Game Boy games on the TI-84 Plus CE</h1>
         <p className="text-ink">
           TI-Boy CE is a Game Boy and Game Boy Color emulator for the calculator. Convert a ROM file of a cartridge you own here, install it together with the emulator, and play Pokemon, Zelda, Mario Land, Tetris, Mortal Kombat and the rest of the Game Boy library at full speed. The conversion runs in your browser; the ROM never leaves your computer.
         </p>
@@ -184,12 +184,12 @@ export function GameBoy() {
               <label className="block text-sm space-y-1">
                 <span className="text-ink">Name on the calculator (up to 5 characters)</span>
                 <input className="input w-full font-mono" value={prefix} maxLength={5} onChange={(e) => setPrefix(e.target.value)} aria-invalid={!!prefixError} />
-                <span className={`block text-xs ${prefixError ? 'text-red' : 'text-faint'}`}>{prefixError ?? `Creates ${converted ? converted.entries.length : 'the'} AppVars named ${prefix}, ${prefix}R00, ...`}</span>
+                <span className={`block text-xs ${prefixError ? 'text-red' : 'text-muted'}`}>{prefixError ?? `Creates ${converted ? converted.entries.length : 'the'} AppVars named ${prefix}, ${prefix}R00, ...`}</span>
               </label>
               <label className="block text-sm space-y-1">
                 <span className="text-ink">Title shown in the emulator's list</span>
                 <input className="input w-full" value={title} maxLength={40} onChange={(e) => setTitle(e.target.value)} />
-                <span className="block text-xs text-faint">Letters, digits and punctuation. Anything else becomes ?.</span>
+                <span className="block text-xs text-muted">Letters, digits and punctuation. Anything else becomes ?.</span>
               </label>
             </div>
           </Card>
@@ -226,7 +226,7 @@ export function GameBoy() {
               </div>
             )}
             {done && <Notice>{done}</Notice>}
-            <p className="text-xs text-faint">The zip holds the same files for TI Connect CE: send all of them to the archive.</p>
+            <p className="text-xs text-muted">The zip holds the same files for TI Connect CE: send all of them to the archive.</p>
           </Card>
         </section>
       )}
